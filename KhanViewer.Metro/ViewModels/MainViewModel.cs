@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using GoogleAnalyticsTracker;
 using KhanViewer.Models;
 
 #if WINDOWS_PHONE
@@ -13,11 +12,6 @@ namespace KhanViewer
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-#if WINDOWS_PHONE
-        Tracker tracker = new Tracker("UA-859807-2", "http://khanacademyforwindowsphone.com");
-#else
-        Tracker tracker = new Tracker("UA-859807-3", "http://khanacademyforwindowsrt.com");
-#endif
 
         public MainViewModel()
         {
@@ -72,12 +66,6 @@ namespace KhanViewer
             return new QueryingHandle(this);
         }
 
-        /// <returns>true only the first time the user accesses the application.</returns>
-        public void HasUserSeenIntro(Action<bool> action)
-        {
-            LocalStorage.HasUserSeenIntro(action);
-        }
-
         public CategoryItem GetCategory(string categoryName)
         {
 #if WINDOWS_PHONE
@@ -130,12 +118,6 @@ namespace KhanViewer
                 
                 CategoryItem.Initialize(this.Groups, this.Categories);
             }
-        }
-
-        public void TrackPageView(string title, string path)
-        {
-            path = path.Replace('/', '-').Replace(' ', '_');
-            tracker.TrackPageView(title, path);
         }
 
         #region Private Methods

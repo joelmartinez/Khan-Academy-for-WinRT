@@ -16,31 +16,6 @@ namespace KhanViewer.Models
         static readonly string VideosFileName = "videos.xml";
         static readonly string LandingBitFileName = "landed.bin";
         static readonly string LAST_VIDEO_FILENAME = "lastvideoviewed.xml";
-        private static bool hasSeenIntro;
-
-        /// <summary>Will return false only the first time a user ever runs this.
-        /// Everytime thereafter, a placeholder file will have been written to disk
-        /// and will trigger a value of true.</summary>
-        public static void HasUserSeenIntro(Action<bool> action)
-        {
-            if (hasSeenIntro) action(true);
-
-            StorageFolder folder = ApplicationData.Current.LocalFolder;
-
-            FileExists(LandingBitFileName).ContinueWith(value =>
-                {
-                    if (!value.Result)
-                    {
-                        FileAsync.Write(folder, LandingBitFileName, CreationCollisionOption.ReplaceExisting, writer => writer.WriteByte(1));
-
-                        UIThread.Invoke(() => action(false));
-                        return;
-                    }
-                });
-
-            hasSeenIntro = true;
-            action(true);
-        }
 
         public static void GetCategories(Action<IEnumerable<CategoryItem>> result)
         {

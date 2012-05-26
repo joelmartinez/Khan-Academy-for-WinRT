@@ -23,7 +23,7 @@ namespace KhanViewer
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             string categoryparam = e.Parameter.ToString();
-            App.ViewModel.TrackPageView(categoryparam, "/Playlist/" + categoryparam);
+
             var category = App.ViewModel.GetCategory(categoryparam);
             category.LoadVideos();
             pageRoot.DataContext = category;

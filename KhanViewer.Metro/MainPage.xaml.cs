@@ -39,21 +39,6 @@ namespace KhanViewer
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.ViewModel.LoadData();
-            App.ViewModel.HasUserSeenIntro(seenit =>
-            {
-                /* // for now, this isn't working
-                 * 
-                if (!seenit)
-                {
-                    App.ViewModel.TrackPageView("Intro", "/Intro");
-                    Frame.Navigate(typeof(Intro));
-                }
-                else*/
-                {
-                    App.ViewModel.TrackPageView("Main", "/");
-                }
-            });
-
 
             DataContext = App.ViewModel;
         }        
