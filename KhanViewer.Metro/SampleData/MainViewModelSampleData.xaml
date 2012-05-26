@@ -1,0 +1,28 @@
+﻿<local:MainViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:KhanViewer" 
+    >
+
+    <local:MainViewModel.Categories>
+        <local:CategoryItem Name="Biology" Description="Covers topics seen in a first year college or high school biology course.">
+            <local:CategoryItem.Videos>
+                <local:VideoItem Name="Addition" Parent="Arithmetic" VideoUri="http://youtube.com/add" Description="Covers topics seen in a first year college or high school biology course." />
+                <local:VideoItem Name="Subtraction" Parent="Arithmetic" VideoUri="http://youtube.com/sub" Description="Covers topics seen in a first year college or high school biology course." />
+            </local:CategoryItem.Videos>
+        </local:CategoryItem>
+        <local:CategoryItem Name="Calculus" Description="Covers topics seen in a first year college or high school biology course. Lorem Ipsum Takesum">
+            <local:CategoryItem.Videos>
+                <local:VideoItem Name="cAddition" Parent="Calculus" VideoUri="http://youtube.com/add" />
+                <local:VideoItem Name="cSubtraction" Parent="Calculus" VideoUri="http://youtube.com/sub" />
+            </local:CategoryItem.Videos>
+        </local:CategoryItem>
+        <local:CategoryItem Name="Trigz">
+            <local:CategoryItem.Videos>
+                <local:VideoItem Name="tAddition" Parent="Trig" VideoUri="http://youtube.com/add" />
+                <local:VideoItem Name="tSubtraction" Parent="Trig" VideoUri="http://youtube.com/sub" />
+            </local:CategoryItem.Videos>
+        </local:CategoryItem>
+    </local:MainViewModel.Categories>
+    
+</local:MainViewModel>
