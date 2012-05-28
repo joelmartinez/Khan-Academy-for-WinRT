@@ -29,14 +29,11 @@ namespace KhanViewer.Models
                     var grouped = GroupItem.CreateGroups(serverItems);
 
                     // load the items up for the UI
-                    UIThread.Invoke(() =>
-                    {
-                        groups.Clear();
-                        foreach (var group in grouped) groups.Add(group);
+                    groups.Clear();
+                    foreach (var group in grouped) groups.Add(group);
 
-                        items.Clear();
-                        foreach (var item in serverItems) items.Add(item);
-                    });
+                    items.Clear();
+                    foreach (var item in serverItems) items.Add(item);
 
                     // save to disk
                     localSaveAction(serverItems.ToArray());

@@ -3,33 +3,9 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KhanViewer.Models
 {
-    public static class JsonHelper
-    {
-        public static async Task<T> DeserializeObject<T>(string url) where T : class
-        {
-            return await DeserializeObject<T>(new Uri(url));
-        }
-
-        public static async Task<T> DeserializeObject<T>(Uri url) where T : class
-        {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-            try
-            {
-                HttpResponseMessage response = await new HttpClient().GetAsync(url);
-                return serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as T;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-    }
-
     public static class WebHelper
     {
         public static void Get(string url, Action<string> action, Action<Exception> error)
@@ -37,7 +13,7 @@ namespace KhanViewer.Models
             Get(new Uri(url), action, error);
         }
 
-        public static void Get(Uri uri, Action<string> action, Action<Exception> error)
+        public static async void Get(Uri uri, Action<string> action, Action<Exception> error)
         {
             var request = WebRequest.CreateHttp(uri);
 
@@ -62,26 +38,23 @@ namespace KhanViewer.Models
             Json<T>(new Uri(url), action, error);
         }
 
-        public static void Json<T>(Uri uri, Action<T> action, Action<Exception> error)
+        public static async void Json<T>(Uri uri, Action<T> action, Action<Exception> error)
         {
-            Get(uri, json =>
+            try
             {
-                try
-                {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-                    byte[] bytes = Encoding.UTF8.GetBytes(json);
-                    using (var stream = new MemoryStream(bytes))
-                    {
-                        var deserialized = serializer.ReadObject(stream);
+                var http = new HttpClient();
+                http.MaxResponseContentBufferSize = Int32.MaxValue;
+                HttpResponseMessage response = await http.GetAsync(uri);
 
-                        action((T)deserialized);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    error(ex);
-                }
-            }, error);
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                var deserialized = (T)serializer.ReadObject(await response.Content.ReadAsStreamAsync());
+
+                action(deserialized);
+            }
+            catch (Exception ex)
+            {
+                error(ex);
+            }
         }
     }
 }
