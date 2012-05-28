@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-#if WINDOWS_PHONE
-using Microsoft.Phone.Tasks;
-#endif
-
 namespace KhanViewer
 {
     [DataContract]
