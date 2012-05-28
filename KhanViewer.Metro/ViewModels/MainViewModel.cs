@@ -56,16 +56,6 @@ namespace KhanViewer
 
         #endregion
 
-        /// <summary>call this any time you begin a server query</summary>
-        /// <returns>a handle which should wrap the operation in a using statement.</returns>
-        public IDisposable StartQuerying()
-        {
-            // TODO: implement refcounting
-            Querying = true;
-            UIThread.Invoke(() => NotifyPropertyChanged("Querying"));
-            return new QueryingHandle(this);
-        }
-
         public PlaylistItem GetPlaylist(string playlistName)
         {
             var playlist = this.Playlists.Where(c => c.Name == playlistName).FirstOrDefault();
@@ -110,28 +100,6 @@ namespace KhanViewer
         }
 
         #region Private Methods
-
-        private void StopQuerying()
-        {
-            // TODO: implement refcounting
-            this.Querying = false;
-            NotifyPropertyChanged("Querying");
-        }
-
-        private class QueryingHandle : IDisposable
-        {
-            private MainViewModel model;
-
-            public QueryingHandle(MainViewModel model)
-            {
-                this.model = model;
-            }
-
-            void IDisposable.Dispose()
-            {
-                //this.model.StopQuerying();
-            }
-        }
 
         private void NotifyPropertyChanged(String propertyName)
         {

@@ -11,43 +11,39 @@ namespace KhanViewer.Models
     {
         protected override void LoadPlaylists(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction)
         {
-            var queryHandle = App.ViewModel.StartQuerying();
             WebHelper.Json<JsonPlaylist[]>("http://www.khanacademy.org/api/v1/playlists", cats =>
             {
-                using (queryHandle)
+                // sort the playlists
+                var serverItems = cats
+                    .Select(k => new PlaylistItem
+                    {
+                        Name = k.Title,
+                        Description = k.Description,
+                        Slug = k.ExtendedSlug
+                    })
+                    .OrderBy(k => k.Slug);
+
+                if (serverItems.Count() > 0)
                 {
-                    // sort the playlists
-                    var serverItems = cats
-                        .Select(k => new PlaylistItem 
-                        { 
-                            Name = k.Title, 
-                            Description = k.Description, 
-                            Slug = k.ExtendedSlug 
-                        })
-                        .OrderBy(k => k.Slug);
+                    // parse out the top level structures
+                    var grouped = GroupItem.CreateGroups(serverItems);
 
-                    if (serverItems.Count() > 0)
+                    // load the items up for the UI
+                    UIThread.Invoke(() =>
                     {
-                        // parse out the top level structures
-                        var grouped = GroupItem.CreateGroups(serverItems);
+                        groups.Clear();
+                        foreach (var group in grouped) groups.Add(group);
 
-                        // load the items up for the UI
-                        UIThread.Invoke(() =>
-                        {
-                            groups.Clear();
-                            foreach (var group in grouped) groups.Add(group);
+                        items.Clear();
+                        foreach (var item in serverItems) items.Add(item);
+                    });
 
-                            items.Clear();
-                            foreach (var item in serverItems) items.Add(item);
-                        });
-
-                        // save to disk
-                        localSaveAction(serverItems.ToArray());
-                    }
-                    else
-                    {
-                        App.ViewModel.SetError("No Playlists returned");
-                    }
+                    // save to disk
+                    localSaveAction(serverItems.ToArray());
+                }
+                else
+                {
+                    App.ViewModel.SetError("No Playlists returned");
                 }
             },
             e =>
@@ -57,40 +53,37 @@ namespace KhanViewer.Models
         }
 
         protected override void LoadVideos(string playlist, ObservableCollection<VideoItem> items, Action<VideoItem[]> localSaveAction)
-        { 
-            var queryHandle = App.ViewModel.StartQuerying();
-
+        {
             string apiUrl = string.Format("http://www.khanacademy.org/api/v1/playlists/{0}/videos", playlist);
 
             WebHelper.Json<JsonVideo[]>(apiUrl, vids =>
             {
-                using (queryHandle)
+                var serverItems = vids.Select(k => new VideoItem
                 {
-                    var serverItems = vids.Select(k => new VideoItem { 
-                        Name = k.Title, 
-                        Description = k.Description, 
-                        YoutubeId = k.YouTubeId,
-                        VideoUri = new Uri(k.Url),
-                        VideoFileUri = k.Downloads != null ? new Uri(k.Downloads.Video) : null,
-                        VideoScreenshotUri = k.Downloads != null ? new Uri(k.Downloads.Screenshot) : null,
-                        Parent = playlist });
-                    if (serverItems.Count() > 0)
+                    Name = k.Title,
+                    Description = k.Description,
+                    YoutubeId = k.YouTubeId,
+                    VideoUri = new Uri(k.Url),
+                    VideoFileUri = k.Downloads != null ? new Uri(k.Downloads.Video) : null,
+                    VideoScreenshotUri = k.Downloads != null ? new Uri(k.Downloads.Screenshot) : null,
+                    Parent = playlist
+                });
+                if (serverItems.Count() > 0)
+                {
+                    UIThread.Invoke(() =>
                     {
-                        UIThread.Invoke(() =>
+                        items.Clear();
+                        foreach (var item in serverItems)
                         {
-                            items.Clear();
-                            foreach (var item in serverItems)
-                            {
-                                items.Add(item);
-                            }
-                        });
+                            items.Add(item);
+                        }
+                    });
 
-                        localSaveAction(serverItems.ToArray());
-                    }
-                    else
-                    {
-                        App.ViewModel.SetError("No Videos returned for " + playlist);
-                    }
+                    localSaveAction(serverItems.ToArray());
+                }
+                else
+                {
+                    App.ViewModel.SetError("No Videos returned for " + playlist);
                 }
             },
             e =>
