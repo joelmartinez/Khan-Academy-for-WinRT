@@ -5,42 +5,40 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using KhanViewer.Common;
 using Windows.Storage;
 
 namespace KhanViewer.Models
 {
     public static class LocalStorage
     {
-        static readonly string CategoryFileName = "categories.xml";
+        static readonly string PlaylistFileName = "playlists.xml";
         static readonly string VideosFileName = "videos.xml";
-        static readonly string LandingBitFileName = "landed.bin";
         static readonly string LAST_VIDEO_FILENAME = "lastvideoviewed.xml";
 
-        public static void GetCategories(Action<IEnumerable<CategoryItem>> result)
+        public static void GetPlaylists(Action<IEnumerable<PlaylistItem>> result)
         {
-            GetFile(CategoryFileName).ContinueWith(value =>
+            GetFile(PlaylistFileName).ContinueWith(value =>
             {
                 var file = value.Result;
 
                 if (file == null)
                 {
-                    result(new CategoryItem[] { new CategoryItem { Name = "Loading", Description = "From Server ..." } });
+                    result(new PlaylistItem[] { new PlaylistItem { Name = "Loading", Description = "From Server ..." } });
                     return;
                 }
 
                 var folder = ApplicationData.Current.LocalFolder;
 
-                folder.OpenStreamForReadAsync(CategoryFileName).ContinueWith(filevalue =>
+                folder.OpenStreamForReadAsync(PlaylistFileName).ContinueWith(filevalue =>
                     {
                         using (var stream = filevalue.Result)
                         {
-                            DataContractSerializer serializer = new DataContractSerializer(typeof(CategoryItem[]));
-                            var localCats = serializer.ReadObject(stream) as CategoryItem[];
+                            DataContractSerializer serializer = new DataContractSerializer(typeof(PlaylistItem[]));
+                            var localCats = serializer.ReadObject(stream) as PlaylistItem[];
 
                             if (localCats == null || localCats.Length == 0)
                             {
-                                result(new CategoryItem[] { new CategoryItem { Name = "Loading from server ...", Description = "local cache was empty" } });
+                                result(new PlaylistItem[] { new PlaylistItem { Name = "Loading from server ...", Description = "local cache was empty" } });
                                 return;
                             }
 
@@ -52,9 +50,9 @@ namespace KhanViewer.Models
 
         }
 
-        public static void GetVideos(string categoryName, Action<IEnumerable<VideoItem>> result)
+        public static void GetVideos(string playlistName, Action<IEnumerable<VideoItem>> result)
         {
-            string filename = categoryName + VideosFileName;
+            string filename = playlistName + VideosFileName;
             filename = IsValidFilename(filename);
 
             FileExists(filename).ContinueWith(exists =>
@@ -117,11 +115,11 @@ namespace KhanViewer.Models
 
         /// <summary>If a specific video item is available on disk, it will be deserialized.
         /// Otherwise will return null.</summary>
-        public static void GetVideo(string categoryName, string videoName, Action<VideoItem> result)
+        public static void GetVideo(string playlistName, string videoName, Action<VideoItem> result)
         {
-            string catpath = IsValidFilename(categoryName);
+            string listpath = IsValidFilename(playlistName);
             string vidpath = IsValidFilename(videoName);
-            string filename = Path.Combine(catpath, vidpath) + ".xml";
+            string filename = Path.Combine(listpath, vidpath) + ".xml";
 
             var folder = ApplicationData.Current.LocalFolder;
             FileExists(filename).ContinueWith(exists =>
@@ -171,21 +169,21 @@ namespace KhanViewer.Models
                 });
         }
 
-        public static void SaveCategories<T>(T[] categories)
+        public static void SavePlaylists<T>(T[] playlists)
         {
-            WriteFile(CategoryFileName).ContinueWith(opentask =>
+            WriteFile(PlaylistFileName).ContinueWith(opentask =>
                 {
                     using (var stream = opentask.Result)
                     {
                         DataContractSerializer serializer = new DataContractSerializer(typeof(T[]));
-                        serializer.WriteObject(stream, categories);
+                        serializer.WriteObject(stream, playlists);
                     }
                 });
         }
 
-        public static void SaveVideos<T>(string categoryName, T[] videos)
+        public static void SaveVideos<T>(string playlistName, T[] videos)
         {
-            string filename = categoryName + VideosFileName;
+            string filename = playlistName + VideosFileName;
 
             filename = IsValidFilename(filename);
 
@@ -226,7 +224,7 @@ namespace KhanViewer.Models
             var folder = ApplicationData.Current.LocalFolder;
             try
             {
-                return await folder.GetFileAsync(CategoryFileName);
+                return await folder.GetFileAsync(PlaylistFileName);
             }
             catch (FileNotFoundException)
             {

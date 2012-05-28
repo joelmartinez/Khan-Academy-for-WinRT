@@ -7,12 +7,12 @@ namespace KhanViewer.Models
 
     public abstract class DataServer
     {
-        public void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<CategoryItem> items)
+        public void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
         {
-            this.LoadCategories(groups, items, cats => LocalStorage.SaveCategories(cats));
+            this.LoadCategories(groups, items, cats => LocalStorage.SavePlaylists(cats));
         }
 
-        protected abstract void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<CategoryItem> items, Action<CategoryItem[]> localSaveAction);
+        protected abstract void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction);
 
         public void LoadVideos(string category, ObservableCollection<VideoItem> items)
         {

@@ -9,7 +9,7 @@ namespace KhanViewer.Models
 
     public sealed class KhanAcademyApi : DataServer
     {
-        protected override void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<CategoryItem> items, Action<CategoryItem[]> localSaveAction)
+        protected override void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction)
         {
             var queryHandle = App.ViewModel.StartQuerying();
             WebHelper.Json<JsonCategory[]>("http://www.khanacademy.org/api/v1/playlists", cats =>
@@ -18,7 +18,7 @@ namespace KhanViewer.Models
                 {
                     // sort the playlists
                     var serverItems = cats
-                        .Select(k => new CategoryItem 
+                        .Select(k => new PlaylistItem 
                         { 
                             Name = k.Title, 
                             Description = k.Description, 

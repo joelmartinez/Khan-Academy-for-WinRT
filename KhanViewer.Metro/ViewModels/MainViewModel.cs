@@ -16,14 +16,14 @@ namespace KhanViewer
         public MainViewModel()
         {
             this.Groups = new ObservableCollection<GroupItem>();
-            this.Categories = new ObservableCollection<CategoryItem>();
+            this.Categories = new ObservableCollection<PlaylistItem>();
         }
 
         #region Properties
 
         public ObservableCollection<GroupItem> Groups { get; private set; }
 
-        public ObservableCollection<CategoryItem> Categories { get; private set; }
+        public ObservableCollection<PlaylistItem> Categories { get; private set; }
 
         public bool Querying { get; set; }
 
@@ -66,7 +66,7 @@ namespace KhanViewer
             return new QueryingHandle(this);
         }
 
-        public CategoryItem GetCategory(string categoryName)
+        public PlaylistItem GetCategory(string categoryName)
         {
 #if WINDOWS_PHONE
             var state = PhoneApplicationService.Current.State;
@@ -116,7 +116,7 @@ namespace KhanViewer
             {
                 this.IsDataLoaded = true;
                 
-                CategoryItem.Initialize(this.Groups, this.Categories);
+                PlaylistItem.Initialize(this.Groups, this.Categories);
             }
         }
 

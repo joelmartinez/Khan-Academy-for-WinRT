@@ -1,80 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using KhanViewer.Models;
-
-#if !WINDOWS_PHONE
-using Windows.UI;
-#else
-using System.Windows.Media;
-#endif
 
 namespace KhanViewer
 {
     [DataContract]
-    public class GroupItem
-    {
-        [DataMember]
-        public string Name { get; set; }
-
-        public Color Color { get; set; }
-
-        public int Count
-        {
-            get
-            {
-                if (this.Playlists == null) return 0;
-                return this.Playlists.Count;
-            }
-        }
-
-        [DataMember]
-        public ObservableCollection<CategoryItem> Playlists { get; set; }
-
-        /// <summary>This member only exists to simplify adding playlists
-        /// to the observable collection from the linq expression.</summary>
-        private IEnumerable<CategoryItem> ListSetter
-        {
-            set
-            {
-                if (Playlists == null) Playlists = new ObservableCollection<CategoryItem>();
-                else Playlists.Clear();
-
-                foreach (var item in value) Playlists.Add(item);
-            }
-        }
-
-        public static IEnumerable<GroupItem> CreateGroups(IEnumerable<CategoryItem> serverItems)
-        {
-            var grouped = serverItems
-                .GroupBy(i => i.GroupKey)
-                .Select(g => new GroupItem
-                {
-                    Name = g.Key,
-                    Color = AssignNextColor(),
-                    ListSetter = g
-                });
-            return grouped;
-        }
-
-        private static Color AssignNextColor()
-        {
-            // TODO: write color array and logic to assign colors
-#if !WINDOWS_PHONE
-            return ColorHelper.FromArgb(150, 150, 150, 150);
-#else
-            return Color.FromArgb(150, 150, 150, 150);
-#endif
-        }
-    }
-
-    [DataContract]
-    public class CategoryItem : Item
+    public class PlaylistItem : Item
     {
         private bool loaded = false;
 
-        public CategoryItem()
+        public PlaylistItem()
         {
             this.Videos = new ObservableCollection<VideoItem>();
         }
@@ -134,10 +69,10 @@ namespace KhanViewer
             }
         }
 
-        public static void Initialize(ObservableCollection<GroupItem> groups, ObservableCollection<CategoryItem> items)
+        public static void Initialize(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
         {
             // first load what I know
-            LocalStorage.GetCategories(playlists =>
+            LocalStorage.GetPlaylists(playlists =>
                 {
                     var grouped = GroupItem.CreateGroups(playlists);
 
