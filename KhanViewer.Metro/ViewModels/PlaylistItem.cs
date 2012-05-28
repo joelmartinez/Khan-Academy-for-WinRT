@@ -47,17 +47,16 @@ namespace KhanViewer
             }
         }
 
-        public void LoadVideos()
+        public async void LoadVideos()
         {
             if (!loaded)
             {
                 // first load what I know (ie. from disk)
-                LocalStorage.GetVideos(this.Name, vids =>
-                    {
-                        UIThread.Invoke(() => { foreach (var vid in vids) Videos.Add(vid); });
+                var vids = await LocalStorage.GetVideos(this.Name);
 
-                        loaded = true;
-                    });
+                foreach (var vid in vids) Videos.Add(vid);
+
+                loaded = true;
 
                 // now kick off the server to the query
                 Clouds.GetVideosFromServer(this.Videos, this.Name);

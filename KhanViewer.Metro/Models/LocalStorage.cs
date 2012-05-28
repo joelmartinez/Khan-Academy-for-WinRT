@@ -41,48 +41,39 @@ namespace KhanViewer.Models
             }
         }
 
-        public static void GetVideos(string playlistName, Action<IEnumerable<VideoItem>> result)
+        public static async Task<IEnumerable<VideoItem>> GetVideos(string playlistName)
         {
             string filename = playlistName + VideosFileName;
             filename = IsValidFilename(filename);
 
-            FileExists(filename).ContinueWith(exists =>
+            var exists = await FileExists(filename);
+            if (!exists) return new VideoItem[] { new VideoItem { Name = "Loading", Description = "From Server ..." } };
+
+            // the file exists locally, let's read it into memory and deserialize it
+            var folder = ApplicationData.Current.LocalFolder;
+            var stream = await folder.OpenStreamForReadAsync(filename);
+
+            using (stream)
+            {
+                VideoItem[] localVids;
+
+                try
                 {
-                    if (!exists.Result)
-                    {
-                        result(new VideoItem[] { new VideoItem { Name = "Loading", Description = "From Server ..." } });
-                        return;
-                    }
+                    DataContractSerializer serializer = new DataContractSerializer(typeof(VideoItem[]));
+                    localVids = serializer.ReadObject(stream) as VideoItem[];
+                }
+                catch
+                {
+                    return GetPlaceHolder();
+                }
 
-                    var folder = ApplicationData.Current.LocalFolder;
+                if (localVids == null || localVids.Length == 0)
+                {
+                    return GetPlaceHolder();
+                }
 
-                    folder.OpenStreamForReadAsync(filename).ContinueWith(readtask =>
-                        {
-                            using (var stream = readtask.Result)
-                            {
-                                VideoItem[] localVids;
-
-                                try
-                                {
-                                    DataContractSerializer serializer = new DataContractSerializer(typeof(VideoItem[]));
-                                    localVids = serializer.ReadObject(stream) as VideoItem[];
-                                }
-                                catch
-                                {
-                                    result(GetPlaceHolder());
-                                    return;
-                                }
-
-                                if (localVids == null || localVids.Length == 0)
-                                {
-                                    result(GetPlaceHolder());
-                                    return;
-                                }
-
-                                result(localVids);
-                            }
-                        });
-                });
+                return localVids;
+            }
         }
 
         /// <summary>Gets you the last viewed video. Or null if none viewed previously.</summary>
