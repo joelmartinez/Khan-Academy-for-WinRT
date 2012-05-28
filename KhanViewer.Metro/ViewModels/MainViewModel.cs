@@ -25,8 +25,6 @@ namespace KhanViewer
 
         public ObservableCollection<PlaylistItem> Playlists { get; private set; }
 
-        public bool Querying { get; set; }
-
         public bool IsDataLoaded
         {
             get;
@@ -37,19 +35,11 @@ namespace KhanViewer
         /// You should not show this to the user, but communicate to devs.</summary>
         public string ErrorMessage { get; private set; }
 
-        /// <summary>If this is true, there has been a fault and you should let the user know.</summary>
-        public bool IsError { get; private set; }
-
         /// <summary>If the application encounters an error condition, call this method.</summary>
         /// <param name="message">The error details to send to the developers.</param>
         public void SetError(string message)
         {
             UIThread.MessageBox(message);
-            this.IsError = true;
-            this.ErrorMessage = message;
-
-            this.NotifyPropertyChanged("ErrorMessage");
-            this.NotifyPropertyChanged("IsError");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
