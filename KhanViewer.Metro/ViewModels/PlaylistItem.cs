@@ -68,12 +68,12 @@ namespace KhanViewer
             }
         }
 
-        public static async void Initialize(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
+        public static async void Initialize(ObservableCollection<TopicItem> groups, ObservableCollection<PlaylistItem> items)
         {
             // first load what I know
             var playlists = await LocalStorage.GetPlaylists();
 
-            var grouped = GroupItem.CreateGroups(playlists);
+            var grouped = TopicItem.CreateGroups(playlists);
 
             // now load the locally cached data into the collections
             groups.Clear();

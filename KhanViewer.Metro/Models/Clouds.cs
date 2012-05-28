@@ -12,7 +12,7 @@ namespace KhanViewer.Models
         }
 
         /// <summary>Queries the server for a list of all playlists</summary>
-        public static void LoadPlaylistsFromServer(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
+        public static void LoadPlaylistsFromServer(ObservableCollection<TopicItem> groups, ObservableCollection<PlaylistItem> items)
         {
             server.LoadPlaylists(groups, items);
         }

@@ -141,7 +141,7 @@
     <Compile Include="VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\GroupItem.cs" />
+    <Compile Include="ViewModels\TopicItem.cs" />
     <Compile Include="ViewModels\PlaylistItem.cs" />
     <Compile Include="ViewModels\Item.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

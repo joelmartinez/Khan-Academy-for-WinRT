@@ -9,7 +9,7 @@ namespace KhanViewer.Models
 
     public sealed class KhanAcademyApi : DataServer
     {
-        protected override void LoadPlaylists(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction)
+        protected override void LoadPlaylists(ObservableCollection<TopicItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction)
         {
             WebHelper.Json<JsonPlaylist[]>("http://www.khanacademy.org/api/v1/playlists", cats =>
             {
@@ -26,7 +26,7 @@ namespace KhanViewer.Models
                 if (serverItems.Count() > 0)
                 {
                     // parse out the top level structures
-                    var grouped = GroupItem.CreateGroups(serverItems);
+                    var grouped = TopicItem.CreateGroups(serverItems);
 
                     // load the items up for the UI
                     groups.Clear();

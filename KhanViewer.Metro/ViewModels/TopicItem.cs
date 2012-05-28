@@ -7,7 +7,7 @@ using Windows.UI;
 namespace KhanViewer
 {
     [DataContract]
-    public class GroupItem
+    public class TopicItem
     {
         [DataMember]
         public string Name { get; set; }
@@ -39,11 +39,11 @@ namespace KhanViewer
             }
         }
 
-        public static IEnumerable<GroupItem> CreateGroups(IEnumerable<PlaylistItem> serverItems)
+        public static IEnumerable<TopicItem> CreateGroups(IEnumerable<PlaylistItem> serverItems)
         {
             var grouped = serverItems
                 .GroupBy(i => i.GroupKey)
-                .Select(g => new GroupItem
+                .Select(g => new TopicItem
                 {
                     Name = g.Key,
                     Color = AssignNextColor(),

@@ -11,13 +11,13 @@ namespace KhanViewer
     {
         public MainViewModel()
         {
-            this.Groups = new ObservableCollection<GroupItem>();
+            this.Topics = new ObservableCollection<TopicItem>();
             this.Playlists = new ObservableCollection<PlaylistItem>();
         }
 
         #region Properties
 
-        public ObservableCollection<GroupItem> Groups { get; private set; }
+        public ObservableCollection<TopicItem> Topics { get; private set; }
 
         public ObservableCollection<PlaylistItem> Playlists { get; private set; }
 
@@ -75,7 +75,7 @@ namespace KhanViewer
             {
                 this.IsDataLoaded = true;
 
-                PlaylistItem.Initialize(this.Groups, this.Playlists);
+                PlaylistItem.Initialize(this.Topics, this.Playlists);
             }
         }
 
