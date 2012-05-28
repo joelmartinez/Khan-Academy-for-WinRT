@@ -93,7 +93,7 @@ namespace KhanViewer.Models
                         });
                 });
         }
-        
+
         /// <summary>Gets you the last viewed video. Or null if none viewed previously.</summary>
         public static async Task<VideoItem> GetLastViewedAsync()
         {
@@ -104,7 +104,7 @@ namespace KhanViewer.Models
             }
 
             var readtask = await folder.OpenStreamForReadAsync(LAST_VIDEO_FILENAME);
-                        
+
             using (var stream = readtask)
             {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(VideoItem));
@@ -115,31 +115,24 @@ namespace KhanViewer.Models
 
         /// <summary>If a specific video item is available on disk, it will be deserialized.
         /// Otherwise will return null.</summary>
-        public static void GetVideo(string playlistName, string videoName, Action<VideoItem> result)
+        public static async Task<VideoItem> GetVideo(string playlistName, string videoName)
         {
             string listpath = IsValidFilename(playlistName);
             string vidpath = IsValidFilename(videoName);
             string filename = Path.Combine(listpath, vidpath) + ".xml";
 
             var folder = ApplicationData.Current.LocalFolder;
-            FileExists(filename).ContinueWith(exists =>
-                {
-                    if (!exists.Result)
-                    {
-                        result(null);
-                        return;
-                    }
+            var exists = await FileExists(filename);
 
-                    folder.OpenStreamForReadAsync(filename).ContinueWith(readtask =>
-                        {
-                            using (var stream = readtask.Result)
-                            {
-                                DataContractSerializer serializer = new DataContractSerializer(typeof(VideoItem));
-                                var deserializedVid = serializer.ReadObject(stream) as VideoItem;
-                                result(deserializedVid);
-                            }
-                        });
-                });
+            if (!exists) return null;
+
+            using (var stream = await folder.OpenStreamForReadAsync(filename))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(typeof(VideoItem));
+                var deserializedVid = serializer.ReadObject(stream) as VideoItem;
+                return deserializedVid;
+            }
+
         }
 
         public static void SaveVideo(VideoItem item)
@@ -147,7 +140,7 @@ namespace KhanViewer.Models
             string catpath = IsValidFilename(item.Parent);
             string vidpath = IsValidFilename(item.Name);
             string filename = Path.Combine(catpath, vidpath) + ".xml";
-            
+
             var folder = CreateDirectory(catpath);
 
             WriteFile(filename).ContinueWith(opentask =>
@@ -158,7 +151,7 @@ namespace KhanViewer.Models
                         serializer.WriteObject(stream, item);
                     }
                 });
-                       
+
             WriteFile(LAST_VIDEO_FILENAME).ContinueWith(opentask =>
                 {
                     using (var stream = opentask.Result)
@@ -204,8 +197,9 @@ namespace KhanViewer.Models
         {
             var invalid = System.IO.Path.GetInvalidPathChars().Union(new char[] { ':', ' ' }).ToArray();
             Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(invalid)) + "]");
-            if (containsABadCharacter.IsMatch(testName)) {
-                foreach(var c in invalid)
+            if (containsABadCharacter.IsMatch(testName))
+            {
+                foreach (var c in invalid)
                 {
                     testName = testName.Replace(c.ToString(), String.Empty);
                 }

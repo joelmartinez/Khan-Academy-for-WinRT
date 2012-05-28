@@ -2,17 +2,13 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using KhanViewer.Models;
-
-#if WINDOWS_PHONE
-using Microsoft.Phone.Shell;
-#endif
 
 namespace KhanViewer
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-
         public MainViewModel()
         {
             this.Groups = new ObservableCollection<GroupItem>();
@@ -54,26 +50,20 @@ namespace KhanViewer
             return playlist;
         }
 
-        public void GetVideo(string playlistName, string name, Action<VideoItem> result)
+        public async Task<VideoItem> GetVideo(string playlistName, string name)
         {
-            LocalStorage.GetVideo(playlistName, name, vid =>
-                {
-                    if (vid != null)
-                    {
-                        result(vid);
-                        return;
-                    }
+            var vid = await LocalStorage.GetVideo(playlistName, name);
+            if (vid != null) return vid;
 
-                    // didn't have the vid on disk, query the memory store.
-                    vid = this.Playlists
-                        .Where(c => c.Name == playlistName)
-                        .SelectMany(c => c.Videos)
-                        .SingleOrDefault(v => v.Name == name);
+            // didn't have the vid on disk, query the memory store.
+            vid = this.Playlists
+                .Where(c => c.Name == playlistName)
+                .SelectMany(c => c.Videos)
+                .SingleOrDefault(v => v.Name == name);
 
-                    if (vid != null) LocalStorage.SaveVideo(vid);
+            if (vid != null) LocalStorage.SaveVideo(vid);
 
-                    result(vid);
-                });
+            return vid;
         }
 
         /// <summary>
@@ -84,7 +74,7 @@ namespace KhanViewer
             if (!this.IsDataLoaded)
             {
                 this.IsDataLoaded = true;
-                
+
                 PlaylistItem.Initialize(this.Groups, this.Playlists);
             }
         }
