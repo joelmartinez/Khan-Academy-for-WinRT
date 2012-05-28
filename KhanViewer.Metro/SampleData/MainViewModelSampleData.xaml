@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:KhanViewer" 
     >
 
-    <local:MainViewModel.Categories>
+    <local:MainViewModel.Playlists>
         <local:PlaylistItem Name="Biology" Description="Covers topics seen in a first year college or high school biology course.">
             <local:PlaylistItem.Videos>
                 <local:VideoItem Name="Addition" Parent="Arithmetic" VideoUri="http://youtube.com/add" Description="Covers topics seen in a first year college or high school biology course." />
@@ -23,6 +23,6 @@
                 <local:VideoItem Name="tSubtraction" Parent="Trig" VideoUri="http://youtube.com/sub" />
             </local:PlaylistItem.Videos>
         </local:PlaylistItem>
-    </local:MainViewModel.Categories>
+    </local:MainViewModel.Playlists>
     
 </local:MainViewModel>

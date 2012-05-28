@@ -16,14 +16,14 @@ namespace KhanViewer
         public MainViewModel()
         {
             this.Groups = new ObservableCollection<GroupItem>();
-            this.Categories = new ObservableCollection<PlaylistItem>();
+            this.Playlists = new ObservableCollection<PlaylistItem>();
         }
 
         #region Properties
 
         public ObservableCollection<GroupItem> Groups { get; private set; }
 
-        public ObservableCollection<PlaylistItem> Categories { get; private set; }
+        public ObservableCollection<PlaylistItem> Playlists { get; private set; }
 
         public bool Querying { get; set; }
 
@@ -66,28 +66,17 @@ namespace KhanViewer
             return new QueryingHandle(this);
         }
 
-        public PlaylistItem GetCategory(string categoryName)
+        public PlaylistItem GetPlaylist(string playlistName)
         {
-#if WINDOWS_PHONE
-            var state = PhoneApplicationService.Current.State;
-            
-            object ocategory;
-            if (state.TryGetValue(
-                categoryName, 
-                out ocategory)) return ocategory as CategoryItem;
-#endif
-            var category = this.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
-            category.LoadVideos();
+            var playlist = this.Playlists.Where(c => c.Name == playlistName).FirstOrDefault();
+            playlist.LoadVideos();
 
-#if WINDOWS_PHONE
-            state[categoryName] = category;
-#endif
-            return category;
+            return playlist;
         }
 
-        public void GetVideo(string category, string name, Action<VideoItem> result)
+        public void GetVideo(string playlistName, string name, Action<VideoItem> result)
         {
-            LocalStorage.GetVideo(category, name, vid =>
+            LocalStorage.GetVideo(playlistName, name, vid =>
                 {
                     if (vid != null)
                     {
@@ -96,8 +85,8 @@ namespace KhanViewer
                     }
 
                     // didn't have the vid on disk, query the memory store.
-                    vid = this.Categories
-                        .Where(c => c.Name == category)
+                    vid = this.Playlists
+                        .Where(c => c.Name == playlistName)
                         .SelectMany(c => c.Videos)
                         .SingleOrDefault(v => v.Name == name);
 
@@ -116,7 +105,7 @@ namespace KhanViewer
             {
                 this.IsDataLoaded = true;
                 
-                PlaylistItem.Initialize(this.Groups, this.Categories);
+                PlaylistItem.Initialize(this.Groups, this.Playlists);
             }
         }
 

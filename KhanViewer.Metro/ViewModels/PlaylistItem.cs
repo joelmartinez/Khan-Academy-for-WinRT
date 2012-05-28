@@ -14,7 +14,7 @@ namespace KhanViewer
             this.Videos = new ObservableCollection<VideoItem>();
         }
 
-        /// <summary>List of videos in this category</summary>
+        /// <summary>List of videos in this playlist</summary>
         [DataMember]
         public ObservableCollection<VideoItem> Videos { get; set; }
 
@@ -85,7 +85,7 @@ namespace KhanViewer
                     });
 
                     // then start to query the server
-                    Clouds.LoadCategoriesFromServer(groups, items);
+                    Clouds.LoadPlaylistsFromServer(groups, items);
                 });
         }
     }

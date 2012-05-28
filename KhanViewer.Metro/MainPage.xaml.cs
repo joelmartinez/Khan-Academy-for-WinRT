@@ -52,7 +52,7 @@ namespace KhanViewer
             var item = MainListBox.SelectedItem as Item;
             // Navigate to the new page
 
-            Frame.Navigate(typeof(CategoryPage), item.Name);
+            Frame.Navigate(typeof(PlaylistPage), item.Name);
 
             MainListBox.SelectedIndex = -1;
         }

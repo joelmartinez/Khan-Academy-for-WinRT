@@ -8,9 +8,9 @@ namespace KhanViewer
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class CategoryPage : KhanViewer.Common.LayoutAwarePage
+    public sealed partial class PlaylistPage : KhanViewer.Common.LayoutAwarePage
     {
-        public CategoryPage()
+        public PlaylistPage()
         {
             this.InitializeComponent();
         }
@@ -22,11 +22,11 @@ namespace KhanViewer
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string categoryparam = e.Parameter.ToString();
+            string playlistparam = e.Parameter.ToString();
 
-            var category = App.ViewModel.GetCategory(categoryparam);
-            category.LoadVideos();
-            pageRoot.DataContext = category;
+            var playlist = App.ViewModel.GetPlaylist(playlistparam);
+            playlist.LoadVideos();
+            pageRoot.DataContext = playlist;
         }
 
         private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

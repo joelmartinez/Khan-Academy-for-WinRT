@@ -4,21 +4,20 @@ using System.Linq;
 
 namespace KhanViewer.Models
 {
-
     public abstract class DataServer
     {
-        public void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
+        public void LoadPlaylists(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
         {
-            this.LoadCategories(groups, items, cats => LocalStorage.SavePlaylists(cats));
+            this.LoadPlaylists(groups, items, cats => LocalStorage.SavePlaylists(cats));
         }
 
-        protected abstract void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction);
+        protected abstract void LoadPlaylists(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction);
 
-        public void LoadVideos(string category, ObservableCollection<VideoItem> items)
+        public void LoadVideos(string playlist, ObservableCollection<VideoItem> items)
         {
-            this.LoadVideos(category, items, vids => LocalStorage.SaveVideos(category, vids));
+            this.LoadVideos(playlist, items, vids => LocalStorage.SaveVideos(playlist, vids));
         }
 
-        protected abstract void LoadVideos(string category, ObservableCollection<VideoItem> items, Action<VideoItem[]> localSaveAction);
+        protected abstract void LoadVideos(string playlist, ObservableCollection<VideoItem> items, Action<VideoItem[]> localSaveAction);
     }
 }

@@ -9,10 +9,10 @@ namespace KhanViewer.Models
 
     public sealed class KhanAcademyApi : DataServer
     {
-        protected override void LoadCategories(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction)
+        protected override void LoadPlaylists(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items, Action<PlaylistItem[]> localSaveAction)
         {
             var queryHandle = App.ViewModel.StartQuerying();
-            WebHelper.Json<JsonCategory[]>("http://www.khanacademy.org/api/v1/playlists", cats =>
+            WebHelper.Json<JsonPlaylist[]>("http://www.khanacademy.org/api/v1/playlists", cats =>
             {
                 using (queryHandle)
                 {
@@ -46,7 +46,7 @@ namespace KhanViewer.Models
                     }
                     else
                     {
-                        App.ViewModel.SetError("No Categories returned");
+                        App.ViewModel.SetError("No Playlists returned");
                     }
                 }
             },
@@ -56,11 +56,11 @@ namespace KhanViewer.Models
             });
         }
 
-        protected override void LoadVideos(string category, ObservableCollection<VideoItem> items, Action<VideoItem[]> localSaveAction)
+        protected override void LoadVideos(string playlist, ObservableCollection<VideoItem> items, Action<VideoItem[]> localSaveAction)
         { 
             var queryHandle = App.ViewModel.StartQuerying();
 
-            string apiUrl = string.Format("http://www.khanacademy.org/api/v1/playlists/{0}/videos", category);
+            string apiUrl = string.Format("http://www.khanacademy.org/api/v1/playlists/{0}/videos", playlist);
 
             WebHelper.Json<JsonVideo[]>(apiUrl, vids =>
             {
@@ -73,7 +73,7 @@ namespace KhanViewer.Models
                         VideoUri = new Uri(k.Url),
                         VideoFileUri = k.Downloads != null ? new Uri(k.Downloads.Video) : null,
                         VideoScreenshotUri = k.Downloads != null ? new Uri(k.Downloads.Screenshot) : null,
-                        Parent = category });
+                        Parent = playlist });
                     if (serverItems.Count() > 0)
                     {
                         UIThread.Invoke(() =>
@@ -89,7 +89,7 @@ namespace KhanViewer.Models
                     }
                     else
                     {
-                        App.ViewModel.SetError("No Videos returned for " + category);
+                        App.ViewModel.SetError("No Videos returned for " + playlist);
                     }
                 }
             },
@@ -100,7 +100,7 @@ namespace KhanViewer.Models
         }
 
         [DataContract]
-        public class JsonCategory
+        public class JsonPlaylist
         {
             [DataMember(Name = "ka_url")]
             public string Url { get; set; }
