@@ -5,7 +5,7 @@ using Windows.UI.Popups;
 
 namespace KhanViewer.Models
 {
-    public static class UIThread
+    public static class UIHelper
     {
         private static CoreDispatcher Dispatcher;
 
@@ -19,7 +19,7 @@ namespace KhanViewer.Models
         ///   Invokes the given action on the UI thread - if the current thread is the UI thread this will just invoke the action directly on
         ///   the current thread so it can be safely called without the calling method being aware of which thread it is on.
         /// </summary>
-        public static void Invoke(Action action)
+        private static void Invoke(Action action)
         {
             if (Dispatcher == null)
             {

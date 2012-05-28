@@ -35,7 +35,7 @@ namespace KhanViewer
         /// <param name="message">The error details to send to the developers.</param>
         public void SetError(string message)
         {
-            UIThread.MessageBox(message);
+            UIHelper.MessageBox(message);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

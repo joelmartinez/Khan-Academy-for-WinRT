@@ -67,14 +67,11 @@ namespace KhanViewer.Models
                 });
                 if (serverItems.Count() > 0)
                 {
-                    UIThread.Invoke(() =>
+                    items.Clear();
+                    foreach (var item in serverItems)
                     {
-                        items.Clear();
-                        foreach (var item in serverItems)
-                        {
-                            items.Add(item);
-                        }
-                    });
+                        items.Add(item);
+                    }
 
                     localSaveAction(serverItems.ToArray());
                 }

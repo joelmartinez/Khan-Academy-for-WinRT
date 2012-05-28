@@ -135,7 +135,7 @@
     <Compile Include="Models\DataServer.cs" />
     <Compile Include="Models\KhanAcademyApi.cs" />
     <Compile Include="Models\LocalStorage.cs" />
-    <Compile Include="Models\UIThread.cs" />
+    <Compile Include="Models\UIHelper.cs" />
     <Compile Include="Models\WebHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VideoPlayer.xaml.cs">

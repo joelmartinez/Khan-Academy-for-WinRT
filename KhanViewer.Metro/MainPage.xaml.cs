@@ -25,7 +25,7 @@ namespace KhanViewer
         public MainPage()
         {
             this.InitializeComponent();
-            UIThread.Initialize(this.Dispatcher);
+            UIHelper.Initialize(this.Dispatcher);
 
             App.ViewModel.LoadData();
             DataContext = App.ViewModel;
