@@ -15,39 +15,30 @@ namespace KhanViewer.Models
         static readonly string VideosFileName = "videos.xml";
         static readonly string LAST_VIDEO_FILENAME = "lastvideoviewed.xml";
 
-        public static void GetPlaylists(Action<IEnumerable<PlaylistItem>> result)
+        public static async Task<IEnumerable<PlaylistItem>> GetPlaylists()
         {
-            GetFile(PlaylistFileName).ContinueWith(value =>
-            {
-                var file = value.Result;
+            var file = await GetFile(PlaylistFileName);
 
-                if (file == null)
+            if (file == null) return new PlaylistItem[] { new PlaylistItem { Name = "Loading", Description = "From Server ..." } };
+
+            // so the file exists on disk, let's read it
+            var folder = ApplicationData.Current.LocalFolder;
+
+            var stream = await folder.OpenStreamForReadAsync(PlaylistFileName);
+
+            using (stream)
+            {
+                DataContractSerializer serializer = new DataContractSerializer(typeof(PlaylistItem[]));
+                var localCats = serializer.ReadObject(stream) as PlaylistItem[];
+
+                if (localCats == null || localCats.Length == 0)
                 {
-                    result(new PlaylistItem[] { new PlaylistItem { Name = "Loading", Description = "From Server ..." } });
-                    return;
+                    return new PlaylistItem[] { new PlaylistItem { Name = "Loading from server ...", Description = "local cache was empty" } };
                 }
 
-                var folder = ApplicationData.Current.LocalFolder;
-
-                folder.OpenStreamForReadAsync(PlaylistFileName).ContinueWith(filevalue =>
-                    {
-                        using (var stream = filevalue.Result)
-                        {
-                            DataContractSerializer serializer = new DataContractSerializer(typeof(PlaylistItem[]));
-                            var localCats = serializer.ReadObject(stream) as PlaylistItem[];
-
-                            if (localCats == null || localCats.Length == 0)
-                            {
-                                result(new PlaylistItem[] { new PlaylistItem { Name = "Loading from server ...", Description = "local cache was empty" } });
-                                return;
-                            }
-
-                            // heh, almost read this variable as lolCats 
-                            result(localCats);
-                        }
-                    });
-            });
-
+                // heh, almost read this variable as lolCats 
+                return localCats;
+            }
         }
 
         public static void GetVideos(string playlistName, Action<IEnumerable<VideoItem>> result)

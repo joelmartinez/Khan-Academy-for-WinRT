@@ -69,24 +69,21 @@ namespace KhanViewer
             }
         }
 
-        public static void Initialize(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
+        public static async void Initialize(ObservableCollection<GroupItem> groups, ObservableCollection<PlaylistItem> items)
         {
             // first load what I know
-            LocalStorage.GetPlaylists(playlists =>
-                {
-                    var grouped = GroupItem.CreateGroups(playlists);
+            var playlists = await LocalStorage.GetPlaylists();
 
-                    UIThread.Invoke(() => 
-                    {
-                        groups.Clear();
-                        items.Clear();
-                        foreach (var group in grouped) groups.Add(group);
-                        foreach (var list in playlists) items.Add(list); 
-                    });
+            var grouped = GroupItem.CreateGroups(playlists);
 
-                    // then start to query the server
-                    Clouds.LoadPlaylistsFromServer(groups, items);
-                });
+            // now load the locally cached data into the collections
+            groups.Clear();
+            items.Clear();
+            foreach (var group in grouped) groups.Add(group);
+            foreach (var list in playlists) items.Add(list);
+
+            // then start to query the server
+            Clouds.LoadPlaylistsFromServer(groups, items);
         }
     }
 }
