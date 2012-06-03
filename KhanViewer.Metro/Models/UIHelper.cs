@@ -30,7 +30,7 @@ namespace KhanViewer.Models
             if (Dispatcher.HasThreadAccess)
                 action.Invoke();
             else
-                Dispatcher.Invoke(CoreDispatcherPriority.Normal, (s,a) => action(), Dispatcher, null);
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
         }
 
         public static void MessageBox(string message)

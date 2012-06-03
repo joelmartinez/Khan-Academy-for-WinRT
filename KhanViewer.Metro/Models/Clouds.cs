@@ -8,7 +8,7 @@ namespace KhanViewer.Models
 
         static Clouds()
         {
-            server = new KhanAcademyApi();
+            server = new KhanAcademyApi(); 
         }
 
         /// <summary>Queries the server for a list of all playlists</summary>
