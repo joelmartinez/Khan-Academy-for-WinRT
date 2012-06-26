@@ -1,0 +1,89 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vsm="using:Windows.UI.Xaml"
+    xmlns:local="using:KhanAcademy.Common">
+    
+    <vsm:ResourceDictionary.MergedDictionaries>
+        <vsm:ResourceDictionary Source="StandardStyles.xaml"/>
+    </vsm:ResourceDictionary.MergedDictionaries>
+    
+<SolidColorBrush x:Key="TopicItemForegroundTextBrush" Color="#FF222E3D"/>
+    
+    <vsm:Style x:Key="TopicItemTextStyleTitle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+        <vsm:Setter Property="FontSize" Value="12"/>
+        <vsm:Setter Property="LineHeight" Value="16"/>
+        <vsm:Setter Property="FontWeight" Value="SemiBold"/>
+        <vsm:Setter Property="Foreground" Value="{StaticResource TopicItemForegroundTextBrush}"/>
+        <vsm:Setter Property="VerticalAlignment" Value="Center"/>
+    </vsm:Style>
+
+    <vsm:Style x:Key="TopicItemTextStyleBody" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+        <vsm:Setter Property="FontSize" Value="12"/>
+        <vsm:Setter Property="LineHeight" Value="16"/>
+        <vsm:Setter Property="FontWeight" Value="Light"/>
+        <vsm:Setter Property="Foreground" Value="{StaticResource TopicItemForegroundTextBrush}"/>
+        <vsm:Setter Property="VerticalAlignment" Value="Center"/>
+    </vsm:Style>
+
+    <vsm:DataTemplate x:Key="TopicItemTemplate">
+        <Grid HorizontalAlignment="Left" Width="220" Height="110" Background="White" Margin="0,0,2,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="38"/>
+                <RowDefinition Height="69"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="{Binding Name}" Style="{StaticResource TopicItemTextStyleTitle}" VerticalAlignment="Center" Padding="10,0,10,0"/>
+            <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TopicItemTextStyleBody}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,5,10,5"/>
+            <Rectangle Grid.Row="2" Width="220" Height="2" Fill="{Binding Color}"/>
+        </Grid>
+    </vsm:DataTemplate>
+    
+    <vsm:DataTemplate x:Key="PlaylistItemTemplate">
+        <Grid HorizontalAlignment="Left" Width="220" Height="230" Background="White" Margin="0,0,2,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="38"/>
+                <RowDefinition Height="69"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="#000000" Width="220" Height="120">
+                <Image Source="{Binding Image}" Stretch="UniformToFill"/>
+            </Border>
+            <TextBlock Grid.Row="1" Text="{Binding Name}" Style="{StaticResource TopicItemTextStyleTitle}" VerticalAlignment="Center" Padding="10,0,10,0"/>
+            <TextBlock Grid.Row="2" Text="{Binding Description}" Style="{StaticResource TopicItemTextStyleBody}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,5,10,5"/>
+            <Rectangle Grid.Row="3" Width="220" Height="2" Fill="{Binding Color}"/>
+        </Grid>
+    </vsm:DataTemplate>
+    
+    <vsm:DataTemplate x:Key="FeaturedVideoItemTemplate">
+        <Grid HorizontalAlignment="Left" Width="250" Height="250">
+            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Image Source="{Binding Image}" Stretch="UniformToFill"/>
+            </Border>
+            <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
+                <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+            </StackPanel>
+        </Grid>
+    </vsm:DataTemplate>
+
+    <vsm:DataTemplate x:Key="HubZoomOutTemplate">
+        <Grid HorizontalAlignment="Left" Width="160" Height="380" Background="{Binding Color}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Height="300" VerticalAlignment="Top" Text="{Binding Name}" Style="{StaticResource HeaderTextStyle}" FontSize="28" LineHeight="28" Foreground="White" Margin="10,20,10,0"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0,10,20" VerticalAlignment="Bottom">
+                    <TextBlock Text="{Binding VideosCount}" Foreground="White" Style="{StaticResource HeaderTextStyle}" FontSize="12" LineHeight="12" TextWrapping="NoWrap"/>
+                    <TextBlock Text=" total videos" Foreground="White" Style="{StaticResource HeaderTextStyle}" FontSize="12" LineHeight="12" TextWrapping="NoWrap"/>
+                </StackPanel>
+        </Grid>
+    </vsm:DataTemplate>
+
+
+
+    
+</ResourceDictionary>

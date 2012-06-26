@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="cd104383-4278-4aea-bd3d-27fe571e8c40" Publisher="CN=Richard" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>KhanAcademy</DisplayName>
+    <PublisherDisplayName>ricbarr</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.0</OSMinVersion>
+    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="KhanAcademy.App">
+      <VisualElements DisplayName="KhanAcademy" Logo="Assets\khan150150.png" SmallLogo="Assets\khan3030.png" Description="KhanAcademy" ForegroundText="dark" BackgroundColor="#D4DEB7">
+        <DefaultTile ShowName="logoOnly" WideLogo="Assets\khan310150.png" ShortName="Khan Academy" />
+        <SplashScreen Image="Assets\khanSplashScreen.png" BackgroundColor="#D4DEB7" />
+        <InitialRotationPreference>
+          <Rotation Preference="portrait" />
+          <Rotation Preference="landscape" />
+          <Rotation Preference="portraitFlipped" />
+          <Rotation Preference="landscapeFlipped" />
+        </InitialRotationPreference>
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.search" />
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
