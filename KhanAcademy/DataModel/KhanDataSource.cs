@@ -27,7 +27,7 @@ using System.IO;
 namespace KhanAcademy.Data
 {
     [Windows.Foundation.Metadata.WebHostHidden]
-    [DataContractAttribute ]
+    [DataContractAttribute]
     public abstract class DataItem : KhanAcademy.Common.BindableBase
     {
         internal static Uri _baseUri = new Uri("ms-appx:///");
@@ -61,14 +61,14 @@ namespace KhanAcademy.Data
         private string _description = string.Empty;
         public string Description
         {
-            get 
+            get
             {
                 if (_description == string.Empty)
                 {
-                    _description =  "Videos covering " + this._name;
+                    _description = "Videos covering " + this._name;
                 }
-                return this._description; 
-            
+                return this._description;
+
             }
             set { this.SetProperty(ref this._description, value); }
         }
@@ -179,8 +179,9 @@ namespace KhanAcademy.Data
         private ObservableCollection<VideoItem> _videos = new ObservableCollection<VideoItem>();
         public ObservableCollection<VideoItem> Videos
         {
-            get { 
-                return this._videos; 
+            get
+            {
+                return this._videos;
             }
         }
 
@@ -225,17 +226,26 @@ namespace KhanAcademy.Data
     public class TopicItem : DataItem
     {
         public TopicItem()
-            : base(String.Empty, String.Empty)
+            : this(String.Empty, String.Empty)
         { }
 
         public TopicItem(String name, String description)
             : base(name, description)
-        { }
+        {
+            // manipulate the preferred order of topics
+            if (name.StartsWith("New")) this.Order = 0;
+            if (name.StartsWith("Talks")) this.Order = 1;
+            if (name.StartsWith("Math")) this.Order = 2;
+            if (name.StartsWith("Science")) this.Order = 3;
+            if (name.StartsWith("Test")) this.Order = 100; // end of the line
+        }
 
+        /// <summary>Used to set the primary order on the hub</summary>
+        public int Order = 99;
 
         public IEnumerable<DataItem> HubContent
         {
-            get 
+            get
             {
                 if (this.ContentType == TopicContentType.Videolist)
                 {
@@ -300,27 +310,38 @@ namespace KhanAcademy.Data
                 .Select(g => new TopicItem(g.Key, g.Key + " description")
                 {
                     ListSetter = g
-                }).OrderBy(i=>i.Playlists.Count);
+                });
 
-            return grouped;
+            var res = grouped
+                .OrderBy(i => i.Order)
+                .ThenByDescending(i => i.Playlists.Count);
+
+            return res;
+        }
+
+        private static void SetTopicOrder(IEnumerable<TopicItem> grouped, string name, int ordervalue)
+        {
+            TopicItem topic = grouped.SingleOrDefault(t => t.Name.StartsWith(name));
+            if (topic != null)
+                topic.Order = ordervalue;
         }
 
     }
 
     public sealed class KhanDataSource
     {
-		private const int Megabyte = 1024 * 1024;
+        private const int Megabyte = 1024 * 1024;
 
         private ObservableCollection<TopicItem> _topicGroups = new ObservableCollection<TopicItem>();
         public ObservableCollection<TopicItem> TopicGroups
         {
             get { return this._topicGroups; }
         }
-        
+
         public TopicItem GetTopicGroup(string groupName)
         {
             var matches = this.TopicGroups.Where((group) => group.Name.Equals(groupName));
-            if ( matches.Count() == 1) return matches.First();
+            if (matches.Count() == 1) return matches.First();
             return null;
         }
 
@@ -331,18 +352,18 @@ namespace KhanAcademy.Data
             return null;
         }
 
-		public async Task LoadAllData()
-		{
-			await LoadCachedData();
-			LoadRemoteData();
-		}
+        public async Task LoadAllData()
+        {
+            await LoadCachedData();
+            LoadRemoteData();
+        }
 
-		public async Task LoadCachedData()
-		{
-			// load the disk cache while we wait for the server to respond
-			JsonNode cached = await ReadLocalCacheAsync<JsonNode>(@"cache\topictree.json", @"data\topictree.json");
-			PopulateGroups(cached);
-		}
+        public async Task LoadCachedData()
+        {
+            // load the disk cache while we wait for the server to respond
+            JsonNode cached = await ReadLocalCacheAsync<JsonNode>(@"cache\topictree.json", @"data\topictree.json");
+            PopulateGroups(cached);
+        }
 
         public async void LoadRemoteData()
         {
@@ -362,12 +383,12 @@ namespace KhanAcademy.Data
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var stream = await file.OpenStreamForWriteAsync())
-			{
-				using (var writer = new StreamWriter(stream))
-				{
-					writer.Write(value);
-				}
-			}
+            {
+                using (var writer = new StreamWriter(stream))
+                {
+                    writer.Write(value);
+                }
+            }
         }
 
         /// <summary>Attempts to read and deserialize the file from the local folder. If not found,
@@ -401,7 +422,7 @@ namespace KhanAcademy.Data
             try
             {
                 var file = await folder.GetFileAsync(filename);
-				string result = await FileIO.ReadTextAsync(file);
+                string result = await FileIO.ReadTextAsync(file);
 
                 var serializer = new DataContractJsonSerializer(typeof(T));
                 var memStream = new MemoryStream(Encoding.UTF8.GetBytes(result));
@@ -433,7 +454,7 @@ namespace KhanAcademy.Data
                                             SourceNode = k
                                         })
                                         .OrderBy(k => k.Slug));
-            
+
             // add in the new and interviews playlists which get filtered previously
             // since they are only one level deep
 
@@ -441,12 +462,12 @@ namespace KhanAcademy.Data
                 .Children
                 .Where(c => c.Title.StartsWith("New") || c.Title.StartsWith("Talk"))
                 .Select(k => new PlaylistItem
-                    {
-                        Name = k.Title,
-                        Description = k.Description,
-                        Slug = k.Title,
-                        SourceNode = k
-                    }))
+                {
+                    Name = k.Title,
+                    Description = k.Description,
+                    Slug = k.Title,
+                    SourceNode = k
+                }))
                 .ToArray();
 
             foreach (var playlist in playlists)
@@ -457,15 +478,15 @@ namespace KhanAcademy.Data
                     .Flatten(v => v.Children);
 
                 foreach (var video in videos.Where(videoClause).Select(v => new VideoItem
-                    {
-                         Name = v.Title,
-                         Description = v.Description,
-                         ImagePath = v.Downloads != null ? new Uri(v.Downloads.Screenshot) : null,
-                         VideoPath = v.Downloads != null ? new Uri(v.Downloads.Video) : null,
-                         KhanPath = new Uri(v.Url),
-                         Parent = playlist.Name,
-                         DateAdded = DateTime.Parse(v.DateAdded)
-                    }))
+                {
+                    Name = v.Title,
+                    Description = v.Description,
+                    ImagePath = v.Downloads != null ? new Uri(v.Downloads.Screenshot) : null,
+                    VideoPath = v.Downloads != null ? new Uri(v.Downloads.Video) : null,
+                    KhanPath = new Uri(v.Url),
+                    Parent = playlist.Name,
+                    DateAdded = DateTime.Parse(v.DateAdded)
+                }))
                 {
                     playlist.Videos.Add(video);
                 }
@@ -486,14 +507,14 @@ namespace KhanAcademy.Data
                 PlaylistItem pi = new PlaylistItem();
                 var obj = item.GetObject();
 
-                foreach ( var key in obj.Keys)
+                foreach (var key in obj.Keys)
                 {
                     IJsonValue val;
 
-                    if ( !obj.TryGetValue(key, out val))
+                    if (!obj.TryGetValue(key, out val))
                         continue;
 
-                    if (val == null || val.ValueType == JsonValueType.Null) 
+                    if (val == null || val.ValueType == JsonValueType.Null)
                         continue;
 
                     switch (key.ToLower())
