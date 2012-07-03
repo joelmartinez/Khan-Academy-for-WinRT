@@ -224,6 +224,32 @@ namespace KhanAcademy.Data
                 this.SetProperty(ref this._dateadded, value);
             }
         }
+
+        public static VideoComparer CreateComparer()
+        {
+            return new VideoComparer();
+        }
+
+        public class VideoComparer : IEqualityComparer<VideoItem>
+        {
+            public bool Equals(VideoItem x, VideoItem y)
+            {
+                if (x == null && y == null) return true;
+                if ((x == null && y != null) || (x != null && y == null)) return false;
+
+                return x.Description == y.Description && x.Name == y.Name;
+            }
+
+            public int GetHashCode(VideoItem obj)
+            {
+                if (obj == null) return -1;
+
+                var name = obj.Name ?? string.Empty;
+                var desc = obj.Description ?? string.Empty;
+                
+                return name.GetHashCode() ^ desc.GetHashCode();
+            }
+        }
     }
 
 	[DataContractAttribute]

@@ -136,7 +136,8 @@ namespace KhanAcademy
                 var videos = App.DataSource.TopicGroups.SelectMany(g => 
                     g.Playlists.SelectMany(p => p.Videos.Where(v => 
                         Regex.IsMatch(v.Name ?? "", _queryText, RegexOptions.IgnoreCase) ||
-                        Regex.IsMatch(v.Description ?? "", _queryText, RegexOptions.IgnoreCase))));
+                        Regex.IsMatch(v.Description ?? "", _queryText, RegexOptions.IgnoreCase))))
+                        .Distinct(VideoItem.CreateComparer());
 
                 this.DefaultViewModel["Results"] = videos.ToArray();
 
