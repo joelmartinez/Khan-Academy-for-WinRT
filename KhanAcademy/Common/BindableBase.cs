@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using Windows.UI.Xaml.Data;
 
 namespace KhanAcademy.Common
@@ -8,6 +9,7 @@ namespace KhanAcademy.Common
     /// <summary>
     /// Implementation of <see cref="INotifyPropertyChanged"/> to simplify models.
     /// </summary>
+	[DataContractAttribute]
     [Windows.Foundation.Metadata.WebHostHidden]
     public abstract class BindableBase : INotifyPropertyChanged
     {

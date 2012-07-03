@@ -98,7 +98,7 @@ namespace KhanAcademy
 							Regex.IsMatch(v.VideoPath.ToString() ?? "", resultArgs.Tag, RegexOptions.IgnoreCase)))).FirstOrDefault();
 
 					Frame f = Window.Current.Content as Frame;
-					f.Navigate(typeof(VideoPage), recommended);
+					f.Navigate(typeof(VideoPage), JsonSerializer.Serialize(recommended));
 				};
 
             if (previousExecutionState == ApplicationExecutionState.Running)
@@ -112,11 +112,7 @@ namespace KhanAcademy
 
             if (previousExecutionState == ApplicationExecutionState.Terminated)
             {
-                try
-                {
-                    await SuspensionManager.RestoreAsync();
-                }
-                catch { } // how should we handle this?
+                await SuspensionManager.RestoreAsync();
             }
 
             if (rootFrame.Content == null)
@@ -124,7 +120,7 @@ namespace KhanAcademy
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(HubPage), DataSource.TopicGroups))
+                if (!rootFrame.Navigate(typeof(HubPage), JsonSerializer.Serialize(DataSource.TopicGroups)))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -138,7 +134,7 @@ namespace KhanAcademy
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //await SuspensionManager.SaveAsync();  // THIS CAUSED ERROR WHEN REMOTE MACHINE ( Slate ) TESTING
+            await SuspensionManager.SaveAsync();  // THIS CAUSED ERROR WHEN REMOTE MACHINE ( Slate ) TESTING
             deferral.Complete();
         }
 

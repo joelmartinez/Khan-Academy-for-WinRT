@@ -42,8 +42,9 @@ namespace KhanAcademy
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             //var group = SampleDataSource.GetGroup((String)navigationParameter);
-            this.DefaultViewModel["Group"] = navigationParameter;
-            this.DefaultViewModel["Items"] = (navigationParameter as TopicItem).Playlists;
+			TopicItem ti = JsonSerializer.Deserialize<TopicItem>(navigationParameter as string);
+            this.DefaultViewModel["Group"] = ti;
+            this.DefaultViewModel["Items"] = ti.Playlists;
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace KhanAcademy
         /// <param name="e">Event data that describes the item clicked.</param>
         void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            this.Frame.Navigate(typeof(ItemDetailPage), e.ClickedItem);
+            this.Frame.Navigate(typeof(ItemDetailPage), JsonSerializer.Serialize(e.ClickedItem));
         }
     }
 }

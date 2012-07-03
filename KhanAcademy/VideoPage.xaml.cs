@@ -44,7 +44,10 @@ namespace KhanAcademy
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            VideoItem vid = navigationParameter as VideoItem;
+            VideoItem vid = JsonSerializer.Deserialize<VideoItem>(navigationParameter as string);
+
+            // TODO: store this video as the last video watched
+
             this.DataContext = vid;
         }
 

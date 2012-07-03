@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.DataTransfer;
+using System.Collections.ObjectModel;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -41,8 +42,9 @@ namespace KhanAcademy
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            this.DefaultViewModel["Groups"] = navigationParameter;
-            this.groupGridView.ItemsSource = navigationParameter; // this.groupedItemsViewSource.View;
+			ObservableCollection<TopicItem> items = JsonSerializer.Deserialize<ObservableCollection<TopicItem>>(navigationParameter as string);
+			this.DefaultViewModel["Groups"] = items;
+			this.groupGridView.ItemsSource = items;
         }
 
         void Header_Click(object sender, RoutedEventArgs e)
@@ -61,12 +63,12 @@ namespace KhanAcademy
         {
             if (e.ClickedItem.GetType() == typeof(PlaylistItem))
             {
-                this.Frame.Navigate(typeof(ItemDetailPage), e.ClickedItem);
+                this.Frame.Navigate(typeof(ItemDetailPage), JsonSerializer.Serialize(e.ClickedItem));
             }
             else if (e.ClickedItem.GetType() == typeof(VideoItem))
             {
                 // CALL UP THE PLAY VIDEO PAGE
-                this.Frame.Navigate(typeof(VideoPage), e.ClickedItem);
+                this.Frame.Navigate(typeof(VideoPage), JsonSerializer.Serialize(e.ClickedItem));
             }
         }
 
@@ -82,11 +84,11 @@ namespace KhanAcademy
         {
             if (topicSelected.ContentType == TopicContentType.Videolist)
             {
-                this.Frame.Navigate(typeof(ItemDetailPage), topicSelected.Playlists[0]);
+                this.Frame.Navigate(typeof(ItemDetailPage), JsonSerializer.Serialize(topicSelected.Playlists[0]));
             }
             else
             {
-                this.Frame.Navigate(typeof(GroupDetailPage), topicSelected);
+                this.Frame.Navigate(typeof(GroupDetailPage), JsonSerializer.Serialize(topicSelected));
             }
         }
 

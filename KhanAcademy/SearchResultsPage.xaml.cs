@@ -219,9 +219,7 @@ namespace KhanAcademy
 
         private void resultsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var vid = e.ClickedItem as VideoItem;
-
-            Frame.Navigate(typeof(VideoPage), vid);
+            Frame.Navigate(typeof(VideoPage), JsonSerializer.Serialize(e.ClickedItem));
         }
     }
 }

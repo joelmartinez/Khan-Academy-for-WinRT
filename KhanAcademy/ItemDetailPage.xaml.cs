@@ -41,9 +41,9 @@ namespace KhanAcademy
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             // Allow saved page state to override the initial item to display
-            PlaylistItem playlist = navigationParameter as PlaylistItem;
+            PlaylistItem playlist =  JsonSerializer.Deserialize<PlaylistItem>(navigationParameter as string);
 
-            this.DefaultViewModel["Group"] = navigationParameter;
+			this.DefaultViewModel["Group"] = playlist;
             this.DefaultViewModel["Items"] = playlist.Videos;
 
         }
@@ -62,9 +62,7 @@ namespace KhanAcademy
 
         private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            object o = e.ClickedItem;
-
-            Frame.Navigate(typeof(VideoPage), o);
+            Frame.Navigate(typeof(VideoPage), JsonSerializer.Serialize(e.ClickedItem));
         }
     }
 }
