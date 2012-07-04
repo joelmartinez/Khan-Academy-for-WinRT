@@ -447,7 +447,14 @@ namespace KhanAcademy.Data
         public async Task LoadAllData()
         {
             await LoadCachedData();
-            LoadRemoteData();
+            try
+            {
+                LoadRemoteData();
+            }
+            catch
+            {
+                // if there's no network connection, do nothing.s
+            }
         }
 
         public async Task LoadCachedData()
@@ -554,12 +561,12 @@ namespace KhanAcademy.Data
                 .Children
                 .Where(c => c.Title.StartsWith("New") || c.Title.StartsWith("Talk"))
                 .Select(k => new PlaylistItem
-                {
-                    Name = k.Title,
-                    Description = k.Description,
-                    Slug = k.Title,
-                    SourceNode = k
-                }))
+                    {
+                        Name = k.Title,
+                        Description = k.Description,
+                        Slug = k.Title,
+                        SourceNode = k
+                    }))
                 .ToArray();
 
             foreach (var playlist in playlists)
@@ -570,15 +577,15 @@ namespace KhanAcademy.Data
                     .Flatten(v => v.Children);
 
                 foreach (var video in videos.Where(videoClause).Select(v => new VideoItem
-                {
-                    Name = v.Title,
-                    Description = v.Description,
-                    ImagePath = v.Downloads != null ? new Uri(v.Downloads.Screenshot) : null,
-                    VideoPath = v.Downloads != null ? new Uri(v.Downloads.Video) : null,
-                    KhanPath = new Uri(v.Url),
-                    Parent = playlist.Name,
-                    DateAdded = DateTime.Parse(v.DateAdded)
-                }))
+                    {
+                        Name = v.Title,
+                        Description = v.Description,
+                        ImagePath = v.Downloads != null ? new Uri(v.Downloads.Screenshot) : null,
+                        VideoPath = v.Downloads != null ? new Uri(v.Downloads.Video) : null,
+                        KhanPath = new Uri(v.Url),
+                        Parent = playlist.Name,
+                        DateAdded = DateTime.Parse(v.DateAdded)
+                    }))
                 {
                     playlist.Videos.Add(video);
                 }
