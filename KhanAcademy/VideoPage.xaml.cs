@@ -7,6 +7,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.PlayTo;
+using Windows.System.Display;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,8 +26,9 @@ namespace KhanAcademy
     /// </summary>
     public sealed partial class VideoPage : KhanAcademy.Common.LayoutAwarePage
     {
-		private PlayToManager _playToManager = null;
-		private CoreDispatcher _dispatcher = null;
+        private PlayToManager _playToManager = null;
+        private CoreDispatcher _dispatcher = null;
+        private DisplayRequest _displayRequest = null;
 
         public VideoPage()
         {
@@ -61,38 +63,46 @@ namespace KhanAcademy
         {
         }
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			_dispatcher = Window.Current.CoreWindow.Dispatcher;
-			_playToManager = PlayToManager.GetForCurrentView();
-			_playToManager.SourceRequested += playToManager_SourceRequested;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _dispatcher = Window.Current.CoreWindow.Dispatcher;
+            _playToManager = PlayToManager.GetForCurrentView();
+            _playToManager.SourceRequested += playToManager_SourceRequested;
 
-			base.OnNavigatedTo(e);
-		}
+            if (_displayRequest == null)
+                _displayRequest = new DisplayRequest();
 
-		protected override void OnNavigatedFrom(NavigationEventArgs e)
-		{
-			_playToManager.SourceRequested -= playToManager_SourceRequested;
+            _displayRequest.RequestActive();
 
-			base.OnNavigatedFrom(e);
-		}
+            base.OnNavigatedTo(e);
+        }
 
-		protected override void DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
-		{
-			VideoItem vi = (this.DataContext as VideoItem);
-			args.Request.Data.Properties.Title = vi.Name;
-			args.Request.Data.Properties.Description = vi.Description;
-			args.Request.Data.SetUri(vi.KhanPath);
-		}
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            _playToManager.SourceRequested -= playToManager_SourceRequested;
 
-		void playToManager_SourceRequested(PlayToManager sender, PlayToSourceRequestedEventArgs args)
-		{
-			var deferral = args.SourceRequest.GetDeferral();
-			var handler = _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-			{
-				args.SourceRequest.SetSource(videoElement.PlayToSource);
-				deferral.Complete();
-			});
-		}
+            if (_displayRequest != null)
+                _displayRequest.RequestRelease();
+
+            base.OnNavigatedFrom(e);
+        }
+
+        protected override void DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            VideoItem vi = (this.DataContext as VideoItem);
+            args.Request.Data.Properties.Title = vi.Name;
+            args.Request.Data.Properties.Description = vi.Description;
+            args.Request.Data.SetUri(vi.KhanPath);
+        }
+
+        void playToManager_SourceRequested(PlayToManager sender, PlayToSourceRequestedEventArgs args)
+        {
+            var deferral = args.SourceRequest.GetDeferral();
+            var handler = _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                args.SourceRequest.SetSource(videoElement.PlayToSource);
+                deferral.Complete();
+            });
+        }
     }
 }
