@@ -27,7 +27,7 @@ using System.IO;
 namespace KhanAcademy.Data
 {
     [Windows.Foundation.Metadata.WebHostHidden]
-    [DataContractAttribute ]
+    [DataContractAttribute]
     public abstract class DataItem : KhanAcademy.Common.BindableBase
     {
         internal static Uri _baseUri = new Uri("ms-appx:///");
@@ -41,7 +41,7 @@ namespace KhanAcademy.Data
 
         private SolidColorBrush _color;
 
-		[IgnoreDataMember]
+        [IgnoreDataMember]
         public SolidColorBrush Color
         {
             get { return this._color; }
@@ -67,7 +67,7 @@ namespace KhanAcademy.Data
         }
 
         private string _name = string.Empty;
-		[DataMember]
+        [DataMember]
         public string Name
         {
             get { return this._name; }
@@ -75,17 +75,17 @@ namespace KhanAcademy.Data
         }
 
         private string _description = string.Empty;
-		[DataMember]
+        [DataMember]
         public string Description
         {
-            get 
+            get
             {
                 if (_description == string.Empty)
                 {
-                    _description =  "Videos covering " + this._name;
+                    _description = "Videos covering " + this._name;
                 }
-                return this._description; 
-            
+                return this._description;
+
             }
             set { this.SetProperty(ref this._description, value); }
         }
@@ -101,13 +101,13 @@ namespace KhanAcademy.Data
         {
             private List<Color> TopicColors = new List<Color>(){
                 ColorHelper.FromArgb(140,34,46,61),
-                ColorHelper.FromArgb(140,34,46,61),
                 ColorHelper.FromArgb(255,131,168,37),
                 ColorHelper.FromArgb(255,169,139,36),
                 ColorHelper.FromArgb(255,168,37,37),
                 ColorHelper.FromArgb(255,37,168,130),
                 ColorHelper.FromArgb(255,37,108,168),
-                ColorHelper.FromArgb(255,112,13,92)        
+                ColorHelper.FromArgb(140,34,46,61),
+                ColorHelper.FromArgb(255,112,13,92)   
             };
 
             private int nextColor = 0;
@@ -130,7 +130,7 @@ namespace KhanAcademy.Data
         }
     }
 
-	[DataContractAttribute]
+    [DataContractAttribute]
     public class VideoItem : DataItem
     {
         public VideoItem()
@@ -149,7 +149,7 @@ namespace KhanAcademy.Data
         }
 
         private string _parent = string.Empty;
-		[DataMember]
+        [DataMember]
         public string Parent
         {
             get { return this._parent; }
@@ -157,7 +157,7 @@ namespace KhanAcademy.Data
         }
 
         private string _youTubeID = string.Empty;
-		[DataMember]
+        [DataMember]
         public string YouTubeID
         {
             get { return this._youTubeID; }
@@ -165,7 +165,7 @@ namespace KhanAcademy.Data
         }
 
         private Uri _videoPath = null;
-		[DataMember]
+        [DataMember]
         public Uri VideoPath
         {
             get { return this._videoPath; }
@@ -173,18 +173,18 @@ namespace KhanAcademy.Data
         }
 
         private Uri _filePath = null;
-		[DataMember]
+        [DataMember]
         public Uri FilePath
         {
             get { return this._filePath; }
-			set { this._filePath = value; }
+            set { this._filePath = value; }
         }
 
-		[DataMember]
+        [DataMember]
         public Uri KhanPath { get; set; }
 
         private Uri _imagePath = null;
-		[DataMember]
+        [DataMember]
         public Uri ImagePath
         {
             get { return this._imagePath; }
@@ -192,7 +192,7 @@ namespace KhanAcademy.Data
         }
 
         private ImageSource _image;
-		//[DataMember]
+        //[DataMember]
         public ImageSource Image
         {
             get
@@ -211,7 +211,7 @@ namespace KhanAcademy.Data
         }
 
         private DateTime _dateadded = DateTime.Now;
-		[DataMember]
+        [DataMember]
         public DateTime DateAdded
         {
             get
@@ -246,13 +246,13 @@ namespace KhanAcademy.Data
 
                 var name = obj.Name ?? string.Empty;
                 var desc = obj.Description ?? string.Empty;
-                
+
                 return name.GetHashCode() ^ desc.GetHashCode();
             }
         }
     }
 
-	[DataContractAttribute]
+    [DataContractAttribute]
     public class PlaylistItem : DataItem
     {
         public PlaylistItem()
@@ -264,14 +264,14 @@ namespace KhanAcademy.Data
         { }
 
         private ObservableCollection<VideoItem> _videos = new ObservableCollection<VideoItem>();
-		[DataMember]
+        [DataMember]
         public ObservableCollection<VideoItem> Videos
         {
             get { return this._videos; }
-			set { this._videos = value; }
+            set { this._videos = value; }
         }
 
-		[DataMember]
+        [DataMember]
         public string Slug { get; set; }
 
         /// <summary>Used to simplify building the video list from the topic tree</summary>
@@ -310,7 +310,7 @@ namespace KhanAcademy.Data
         }
     }
 
-	[DataContract]
+    [DataContract]
     public class TopicItem : DataItem
     {
         public TopicItem()
@@ -322,19 +322,19 @@ namespace KhanAcademy.Data
         {
             // manipulate the preferred order of topics
             if (name.StartsWith("New")) this.Order = 0;
-            if (name.StartsWith("Talks")) this.Order = 1;
-            if (name.StartsWith("Math")) this.Order = 2;
-            if (name.StartsWith("Science")) this.Order = 3;
-            if (name.StartsWith("Test")) this.Order = 100; // end of the line
+            if (name.StartsWith("Math")) this.Order = 1;
+            if (name.StartsWith("Science")) this.Order = 2;
+            if (name.StartsWith("Test")) this.Order = 100;
+            if (name.StartsWith("Talks")) this.Order = 101;// end of the line
         }
 
         /// <summary>Used to set the primary order on the hub</summary>
-		[DataMember]
+        [DataMember]
         public int Order = 99;
 
         public IEnumerable<DataItem> HubContent
         {
-            get 
+            get
             {
                 if (this.ContentType == TopicContentType.Videolist)
                 {
@@ -351,11 +351,11 @@ namespace KhanAcademy.Data
         }
 
         private ObservableCollection<PlaylistItem> _playlists = new ObservableCollection<PlaylistItem>();
-		[DataMember]
+        [DataMember]
         public ObservableCollection<PlaylistItem> Playlists
         {
             get { return this._playlists; }
-			set { this._playlists = value; }
+            set { this._playlists = value; }
         }
 
         //public IEnumerable<PlaylistItem> TopPlaylists
@@ -365,7 +365,7 @@ namespace KhanAcademy.Data
         //    get { return this._playlists.Take(12); }
         //}
 
-		[DataMember]
+        [DataMember]
         public TopicContentType ContentType = TopicContentType.Playlist;
 
         public int Count
@@ -406,7 +406,7 @@ namespace KhanAcademy.Data
 
             var res = grouped
                 .OrderBy(i => i.Order)
-                .ThenByDescending(i => i.Playlists.Count );
+                .ThenByDescending(i => i.Playlists.Count);
 
             return res;
         }
@@ -414,7 +414,7 @@ namespace KhanAcademy.Data
         private static void SetTopicOrder(IEnumerable<TopicItem> grouped, string name, int ordervalue)
         {
             TopicItem topic = grouped.SingleOrDefault(t => t.Name.StartsWith(name));
-            if (topic != null) 
+            if (topic != null)
                 topic.Order = ordervalue;
         }
 
@@ -422,18 +422,18 @@ namespace KhanAcademy.Data
 
     public sealed class KhanDataSource
     {
-		private const int Megabyte = 1024 * 1024;
+        private const int Megabyte = 1024 * 1024;
 
         private ObservableCollection<TopicItem> _topicGroups = new ObservableCollection<TopicItem>();
         public ObservableCollection<TopicItem> TopicGroups
         {
             get { return this._topicGroups; }
         }
-        
+
         public TopicItem GetTopicGroup(string groupName)
         {
             var matches = this.TopicGroups.Where((group) => group.Name.Equals(groupName));
-            if ( matches.Count() == 1) return matches.First();
+            if (matches.Count() == 1) return matches.First();
             return null;
         }
 
@@ -444,18 +444,18 @@ namespace KhanAcademy.Data
             return null;
         }
 
-		public async Task LoadAllData()
-		{
-			await LoadCachedData();
-			LoadRemoteData();
-		}
+        public async Task LoadAllData()
+        {
+            await LoadCachedData();
+            LoadRemoteData();
+        }
 
-		public async Task LoadCachedData()
-		{
-			// load the disk cache while we wait for the server to respond
-			JsonNode cached = await ReadLocalCacheAsync<JsonNode>(@"cache\topictree.json", @"data\topictree.json");
-			PopulateGroups(cached);
-		}
+        public async Task LoadCachedData()
+        {
+            // load the disk cache while we wait for the server to respond
+            JsonNode cached = await ReadLocalCacheAsync<JsonNode>(@"cache\topictree.json", @"data\topictree.json");
+            PopulateGroups(cached);
+        }
 
         public async void LoadRemoteData()
         {
@@ -475,12 +475,12 @@ namespace KhanAcademy.Data
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var stream = await file.OpenStreamForWriteAsync())
-			{
-				using (var writer = new StreamWriter(stream))
-				{
-					writer.Write(value);
-				}
-			}
+            {
+                using (var writer = new StreamWriter(stream))
+                {
+                    writer.Write(value);
+                }
+            }
         }
 
         /// <summary>Attempts to read and deserialize the file from the local folder. If not found,
@@ -514,7 +514,7 @@ namespace KhanAcademy.Data
             try
             {
                 var file = await folder.GetFileAsync(filename);
-				string result = await FileIO.ReadTextAsync(file);
+                string result = await FileIO.ReadTextAsync(file);
 
                 var serializer = new DataContractJsonSerializer(typeof(T));
                 var memStream = new MemoryStream(Encoding.UTF8.GetBytes(result));
@@ -546,7 +546,7 @@ namespace KhanAcademy.Data
                                             SourceNode = k
                                         })
                                         .OrderBy(k => k.Slug));
-            
+
             // add in the new and interviews playlists which get filtered previously
             // since they are only one level deep
 
@@ -554,12 +554,12 @@ namespace KhanAcademy.Data
                 .Children
                 .Where(c => c.Title.StartsWith("New") || c.Title.StartsWith("Talk"))
                 .Select(k => new PlaylistItem
-                    {
-                        Name = k.Title,
-                        Description = k.Description,
-                        Slug = k.Title,
-                        SourceNode = k
-                    }))
+                {
+                    Name = k.Title,
+                    Description = k.Description,
+                    Slug = k.Title,
+                    SourceNode = k
+                }))
                 .ToArray();
 
             foreach (var playlist in playlists)
@@ -570,15 +570,15 @@ namespace KhanAcademy.Data
                     .Flatten(v => v.Children);
 
                 foreach (var video in videos.Where(videoClause).Select(v => new VideoItem
-                    {
-                         Name = v.Title,
-                         Description = v.Description,
-                         ImagePath = v.Downloads != null ? new Uri(v.Downloads.Screenshot) : null,
-                         VideoPath = v.Downloads != null ? new Uri(v.Downloads.Video) : null,
-                         KhanPath = new Uri(v.Url),
-                         Parent = playlist.Name,
-                         DateAdded = DateTime.Parse(v.DateAdded)
-                    }))
+                {
+                    Name = v.Title,
+                    Description = v.Description,
+                    ImagePath = v.Downloads != null ? new Uri(v.Downloads.Screenshot) : null,
+                    VideoPath = v.Downloads != null ? new Uri(v.Downloads.Video) : null,
+                    KhanPath = new Uri(v.Url),
+                    Parent = playlist.Name,
+                    DateAdded = DateTime.Parse(v.DateAdded)
+                }))
                 {
                     playlist.Videos.Add(video);
                 }
@@ -599,14 +599,14 @@ namespace KhanAcademy.Data
                 PlaylistItem pi = new PlaylistItem();
                 var obj = item.GetObject();
 
-                foreach ( var key in obj.Keys)
+                foreach (var key in obj.Keys)
                 {
                     IJsonValue val;
 
-                    if ( !obj.TryGetValue(key, out val))
+                    if (!obj.TryGetValue(key, out val))
                         continue;
 
-                    if (val == null || val.ValueType == JsonValueType.Null) 
+                    if (val == null || val.ValueType == JsonValueType.Null)
                         continue;
 
                     switch (key.ToLower())
@@ -637,9 +637,15 @@ namespace KhanAcademy.Data
             {
                 group.AssignNextColor();
 
+                // propagate the color choice
                 foreach (PlaylistItem playlistItem in group.Playlists)
                 {
-                    playlistItem.Color = group.Color;
+                    playlistItem.ColorIndex = group.ColorIndex;
+
+                    foreach (var video in playlistItem.Videos)
+                    {
+                        video.ColorIndex = group.ColorIndex;
+                    }
                 }
 
                 if (group.Playlists.Count == 1)
