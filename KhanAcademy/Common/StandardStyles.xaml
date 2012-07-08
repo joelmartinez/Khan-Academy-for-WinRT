@@ -31,15 +31,15 @@
 
     <SolidColorBrush x:Key="ApplicationForegroundThemeBrush" Color="#FF222E3D" />
     <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#FFD4DEB7" />
-    <SolidColorBrush x:Key="ApplicationPointerOverForegroundThemeBrush" Color="#FF83A825" />
-    <SolidColorBrush x:Key="ApplicationPressedForegroundThemeBrush" Color="#FF83A825" />
+    <SolidColorBrush x:Key="ApplicationPointerOverForegroundThemeBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="ApplicationPressedForegroundThemeBrush" Color="#FFFFFFFF" />
     <SolidColorBrush x:Key="ButtonDisabledForegroundThemeBrush" Color="#99222E3D" />
     <SolidColorBrush x:Key="ListViewItemPlaceholderBackgroundThemeBrush" Color="#FF222E3D" />
     <SolidColorBrush x:Key="ListViewItemOverlayBackgroundThemeBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="ListViewItemBackgroundThemeBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="BackButtonForegroundThemeBrush" Color="#FF222E3D"/>
-    <SolidColorBrush x:Key="BackButtonPressedForegroundThemeBrush" Color="#99222E3D"/>
-    <SolidColorBrush x:Key="BackButtonPointerOverBackgroundThemeBrush" Color="#99222E3D"/>
+    <SolidColorBrush x:Key="BackButtonPressedForegroundThemeBrush" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="BackButtonPointerOverBackgroundThemeBrush" Color="#00000000"/>
         
     <!-- RichTextBlock styles -->
     

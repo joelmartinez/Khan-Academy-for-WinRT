@@ -100,14 +100,14 @@ namespace KhanAcademy.Data
         private class ColorManager
         {
             private List<Color> TopicColors = new List<Color>(){
-                ColorHelper.FromArgb(140,34,46,61),
-                ColorHelper.FromArgb(255,131,168,37),
-                ColorHelper.FromArgb(255,169,139,36),
-                ColorHelper.FromArgb(255,168,37,37),
-                ColorHelper.FromArgb(255,37,168,130),
-                ColorHelper.FromArgb(255,37,108,168),
-                ColorHelper.FromArgb(140,34,46,61),
-                ColorHelper.FromArgb(255,112,13,92)   
+                ColorHelper.FromArgb(255,45,69,43),
+                ColorHelper.FromArgb(255,124,170,59),
+                ColorHelper.FromArgb(255,133,93,46),
+                ColorHelper.FromArgb(255,170,65,59),
+                ColorHelper.FromArgb(255,110,171,186),
+                ColorHelper.FromArgb(255,59,103,170),
+                ColorHelper.FromArgb(255,153,110,186),
+                ColorHelper.FromArgb(255,25,34,45)   
             };
 
             private int nextColor = 0;
@@ -453,7 +453,7 @@ namespace KhanAcademy.Data
             }
             catch
             {
-                // if there's no network connection, do nothing.s
+                // if there's no network connection, do nothing.
             }
         }
 

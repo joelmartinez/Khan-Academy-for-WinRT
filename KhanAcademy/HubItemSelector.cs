@@ -18,8 +18,6 @@ namespace KhanAcademy
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            //return null;
-
             DataItem dataItem = item as DataItem;
 
             if (dataItem.GetType() == typeof(VideoItem))

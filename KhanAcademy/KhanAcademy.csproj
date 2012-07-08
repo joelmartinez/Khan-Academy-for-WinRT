@@ -142,6 +142,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Common\ReadMe.txt" />
+    <Content Include="Assets\AppTitleTree.png" />
     <Content Include="Data\topictree.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

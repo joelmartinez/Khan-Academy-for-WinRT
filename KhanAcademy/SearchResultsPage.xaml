@@ -123,11 +123,10 @@
                     SelectionMode="None"
                     IsItemClickEnabled="True"
                     ItemsSource="{Binding Source={StaticResource resultsViewSource}}"
-                    ItemTemplate="{StaticResource StandardSmallIcon70ItemTemplate}">
-
+                    ItemTemplate="{StaticResource PlaylistItemSnappedTemplate}"
+                    ItemClick="resultsGridView_ItemClick">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="Control">
-                            <Setter Property="Height" Value="70"/>
                             <Setter Property="Margin" Value="0,0,18,8"/>
                         </Style>
                     </ListView.ItemContainerStyle>
