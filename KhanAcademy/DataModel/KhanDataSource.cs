@@ -455,25 +455,27 @@ namespace KhanAcademy.Data
 				LoadRemoteData();
         }
 
-        public async Task LoadCachedData()
+        private async Task LoadCachedData()
         {
             // load the disk cache while we wait for the server to respond
             JsonNode cached = await ReadLocalCacheAsync<JsonNode>(@"cache\topictree.json", @"data\topictree.json");
             PopulateGroups(cached);
         }
 
-        public async void LoadRemoteData()
+        private async void LoadRemoteData()
         {
             // start the call to get the data from the remote API
             HttpClient client = new HttpClient();
             client.MaxResponseContentBufferSize = Megabyte * 20; // Read up to 20MB of Data, topic tree is 6MB at the time of this writing
 
-            // don't use await so that this runs while we're loading the 
-            // locally cached data from disk
 			try
 			{
+                // download and persist the data
 				HttpResponseMessage response = await client.GetAsync(new Uri("http://www.khanacademy.org/api/v1/topictree"));
-				WriteLocalCacheAsync(await response.Content.ReadAsStringAsync(), @"cache\topictree.json");
+				await WriteLocalCacheAsync(await response.Content.ReadAsStringAsync(), @"cache\topictree.json");
+
+                // now update the memory model
+                await LoadCachedData();
 			}
 			catch (HttpRequestException)
 			{
@@ -481,7 +483,7 @@ namespace KhanAcademy.Data
 			}
         }
 
-        public static async void WriteLocalCacheAsync(string value, string filename)
+        private static async Task WriteLocalCacheAsync(string value, string filename)
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
@@ -496,7 +498,7 @@ namespace KhanAcademy.Data
 
         /// <summary>Attempts to read and deserialize the file from the local folder. If not found,
         /// will optionally try to read a file deployed with the package (think, initial loadout).</summary>
-        public static async Task<T> ReadLocalCacheAsync<T>(string filename, string deployedfile = null) where T : class
+        private static async Task<T> ReadLocalCacheAsync<T>(string filename, string deployedfile = null) where T : class
         {
             try
             {
@@ -539,7 +541,7 @@ namespace KhanAcademy.Data
             }
         }
 
-        void PopulateGroups(JsonNode root)
+        private void PopulateGroups(JsonNode root)
         {
             if (root == null) return;
 
@@ -601,7 +603,7 @@ namespace KhanAcademy.Data
             }
         }
 
-        void PopulateGroups(JsonArray array)
+        private void PopulateGroups(JsonArray array)
         {
             ObservableCollection<PlaylistItem> flatPlaylists = new ObservableCollection<PlaylistItem>();
 
@@ -641,7 +643,7 @@ namespace KhanAcademy.Data
 
         }
 
-        void SortGroups(IEnumerable<TopicItem> grouped)
+        private void SortGroups(IEnumerable<TopicItem> grouped)
         {
             TopicGroups.Clear();
             foreach (var group in grouped)
