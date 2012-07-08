@@ -22,6 +22,7 @@ using Windows.Storage.Streams;
 using Windows.Storage;
 using System.Xml;
 using System.IO;
+using Windows.Networking.Connectivity;
 
 
 namespace KhanAcademy.Data
@@ -447,14 +448,11 @@ namespace KhanAcademy.Data
         public async Task LoadAllData()
         {
             await LoadCachedData();
-            try
-            {
-                LoadRemoteData();
-            }
-            catch
-            {
-                // if there's no network connection, do nothing.
-            }
+
+			// only ping the server if we have a network connection
+			ConnectionProfile profile = NetworkInformation.GetInternetConnectionProfile();
+			if(profile != null)
+				LoadRemoteData();
         }
 
         public async Task LoadCachedData()
@@ -472,9 +470,15 @@ namespace KhanAcademy.Data
 
             // don't use await so that this runs while we're loading the 
             // locally cached data from disk
-            HttpResponseMessage response = await client.GetAsync(new Uri("http://www.khanacademy.org/api/v1/topictree"));
-
-            WriteLocalCacheAsync(await response.Content.ReadAsStringAsync(), @"cache\topictree.json");
+			try
+			{
+				HttpResponseMessage response = await client.GetAsync(new Uri("http://www.khanacademy.org/api/v1/topictree"));
+				WriteLocalCacheAsync(await response.Content.ReadAsStringAsync(), @"cache\topictree.json");
+			}
+			catch (HttpRequestException)
+			{
+				// no network, just
+			}
         }
 
         public static async void WriteLocalCacheAsync(string value, string filename)
