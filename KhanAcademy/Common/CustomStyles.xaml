@@ -29,13 +29,12 @@
     <vsm:DataTemplate x:Key="TopicItemTemplate">
         <Grid HorizontalAlignment="Left" Width="220" Height="110" Background="White" Margin="0,0,2,2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2"/>
-                <RowDefinition Height="38"/>
-                <RowDefinition Height="69"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
-            <Rectangle Grid.Row="0" Width="220" Height="2" Fill="{Binding Color}"/>
-            <TextBlock Grid.Row="1" Text="{Binding Name}" Style="{StaticResource TopicItemTextStyleTitle}" VerticalAlignment="Center" Padding="10,0,10,0"/>
-            <TextBlock Grid.Row="2" Text="{Binding Description}" Style="{StaticResource TopicItemTextStyleBody}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,5,10,5"/>
+            <TextBlock Grid.Row="0" Text="{Binding Name}" Style="{StaticResource TopicItemTextStyleTitle}" VerticalAlignment="Center" Padding="10,0,10,0"/>
+            <Path Grid.Row="1" Data="M0.0,20.0 L20.0,0.0 L20.0,20.0" Fill="{Binding Color}" HorizontalAlignment="Right" Stretch="Fill" Height="20" Margin="2" UseLayoutRounding="False" VerticalAlignment="Bottom" Width="20"/>
+            <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TopicItemTextStyleBody}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,5,10,5"/>
         </Grid>
     </vsm:DataTemplate>
     
@@ -43,28 +42,24 @@
         <Grid HorizontalAlignment="Left" Width="220" Height="230" Background="White" Margin="0,0,2,2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
-                <RowDefinition Height="2"/>
-                <RowDefinition Height="38"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="36"/>
                 <RowDefinition Height="69"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="#000000" Width="220" Height="120">
                 <Image Source="{Binding Image}" Stretch="UniformToFill"/>
             </Border>
-            <Rectangle Grid.Row="1" Width="220" Height="2" Fill="{Binding Color}"/>
+            <Rectangle Grid.Row="1" Width="220" Height="4" Fill="{Binding Color}"/>
             <TextBlock Grid.Row="2" Text="{Binding Name}" Style="{StaticResource TopicItemTextStyleTitle}" VerticalAlignment="Center" Padding="10,0,10,0"/>
             <TextBlock Grid.Row="3" Text="{Binding Description}" Style="{StaticResource TopicItemTextStyleBody}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,5,10,5"/>
         </Grid>
     </vsm:DataTemplate>
 
     <vsm:DataTemplate x:Key="TopicItemSnappedTemplate">
-        <Grid Margin="2" Background="White" MinWidth="280">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Rectangle Grid.Column="0" Width="4" Height="80" Fill="{Binding Color}"/>
-            <TextBlock Grid.Column="1" Padding="10,0,0,10" Text="{Binding Name}" Style="{StaticResource ItemTextStyle}" MaxHeight="80" VerticalAlignment="Center" HorizontalAlignment="Left"/>                            
+        <Grid Margin="2" Background="White" MinWidth="280" Height="80">
+            <TextBlock Padding="10,0,0,10" Text="{Binding Name}" Foreground="Black" Style="{StaticResource ItemTextStyle}" MaxHeight="80" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <Path Data="M0.0,20.0 L20.0,0.0 L20.0,20.0" Fill="{Binding Color}" HorizontalAlignment="Right" Stretch="Fill" Height="20" Margin="2" UseLayoutRounding="False" VerticalAlignment="Bottom" Width="20"/>
         </Grid>
     </vsm:DataTemplate>
 
@@ -72,14 +67,14 @@
         <Grid Margin="2" Background="White" MinWidth="280">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="80" Height="80">
                 <Image Source="{Binding Image}" Stretch="UniformToFill"/>
             </Border>
-            <Rectangle Grid.Column="1" Width="2" Height="80" Fill="{Binding Color}"/>
-            <TextBlock Grid.Column="2" Padding="10,0,10,10" Text="{Binding Name}" Style="{StaticResource ItemTextStyle}" MaxHeight="80" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <Rectangle Grid.Column="1" Width="4" Height="80" Fill="{Binding Color}"/>
+            <TextBlock Grid.Column="2" Padding="10,0,10,10" Text="{Binding Name}" Foreground="Black" Style="{StaticResource ItemTextStyle}" MaxHeight="80" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         </Grid>
     </vsm:DataTemplate>
 

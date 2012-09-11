@@ -100,12 +100,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <SDKReference Include="Microsoft.Metro.PlayerFramework.Xaml, Version=1.2.0">
-      <Name>Microsoft Media Platform: Player Framework</Name>
-    </SDKReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -143,6 +137,7 @@
     </AppxManifest>
     <None Include="Common\ReadMe.txt" />
     <Content Include="Assets\AppTitleTree.png" />
+    <Content Include="Assets\StoreLogo.png" />
     <Content Include="Data\topictree.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -150,20 +145,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AppTitle.png" />
-    <Content Include="Assets\Hub-Playlists.png" />
-    <Content Include="Assets\Hub.png" />
     <Content Include="Assets\khan150150.png" />
     <Content Include="Assets\khan2424.png" />
     <Content Include="Assets\khan3030.png" />
     <Content Include="Assets\khan310150.png" />
     <Content Include="Assets\khanSplashScreen.png" />
-    <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\Playlist.png" />
-    <Content Include="Assets\PlaylistGroup.png" />
     <Content Include="Assets\SemanticZoom.png" />
-    <Content Include="Assets\SmallLogo.png" />
-    <Content Include="Assets\SplashScreen.png" />
-    <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
     <Content Include="Assets\DarkGray.png" />
@@ -203,6 +190,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.4.1">
+      <Name>Microsoft Media Platform: Player Framework</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

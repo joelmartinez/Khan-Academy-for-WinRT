@@ -101,14 +101,23 @@ namespace KhanAcademy.Data
         private class ColorManager
         {
             private List<Color> TopicColors = new List<Color>(){
-                ColorHelper.FromArgb(255,45,69,43),
-                ColorHelper.FromArgb(255,124,170,59),
-                ColorHelper.FromArgb(255,133,93,46),
-                ColorHelper.FromArgb(255,170,65,59),
-                ColorHelper.FromArgb(255,110,171,186),
-                ColorHelper.FromArgb(255,59,103,170),
-                ColorHelper.FromArgb(255,153,110,186),
-                ColorHelper.FromArgb(255,25,34,45)   
+                //ColorHelper.FromArgb(255,45,69,43),
+                //ColorHelper.FromArgb(255,124,170,59),
+                //ColorHelper.FromArgb(255,133,93,46),
+                //ColorHelper.FromArgb(255,170,65,59),
+                //ColorHelper.FromArgb(255,110,171,186),
+                //ColorHelper.FromArgb(255,59,103,170),
+                //ColorHelper.FromArgb(255,153,110,186),
+                //ColorHelper.FromArgb(255,25,34,45)   
+                ColorHelper.FromArgb(255,61,54,103),
+                ColorHelper.FromArgb(255,113,66,102),
+                ColorHelper.FromArgb(255,130,61,180),
+                ColorHelper.FromArgb(255,200,77,95),
+                ColorHelper.FromArgb(255,221,194,63),
+                ColorHelper.FromArgb(255,133,197,162),
+                ColorHelper.FromArgb(255,127,206,69),
+                ColorHelper.FromArgb(255,61,54,103)   
+
             };
 
             private int nextColor = 0;

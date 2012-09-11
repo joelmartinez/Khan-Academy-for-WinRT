@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="KhanAcademy.App">
-      <VisualElements DisplayName="Khan Academy" Logo="Assets\khan150150.png" SmallLogo="Assets\khan3030.png" Description="Khan Academy" ForegroundText="dark" BackgroundColor="#D4DEB7">
+      <VisualElements DisplayName="Viewer for Khan Academy" Logo="Assets\khan150150.png" SmallLogo="Assets\khan3030.png" Description="An independent video player for educationaly videos from Khan Academy. Developed by Joel Martinez as a Coding4Fun Community Project." ForegroundText="dark" BackgroundColor="#42ad02">
         <DefaultTile ShowName="logoOnly" WideLogo="Assets\khan310150.png" ShortName="Khan Academy" />
-        <SplashScreen Image="Assets\khanSplashScreen.png" BackgroundColor="#D4DEB7" />
+        <SplashScreen Image="Assets\khanSplashScreen.png" BackgroundColor="#42ad02" />
         <InitialRotationPreference>
           <Rotation Preference="portrait" />
           <Rotation Preference="landscape" />
