@@ -351,11 +351,13 @@ namespace KhanAcademy.Data
                     var list = this.Playlists[0].Videos
                         .Where(v => v.VideoPath != null)
                         .OrderByDescending(v => v.DateAdded);
-                    return new ObservableCollection<DataItem>(list).Take(6);
+                    //return new ObservableCollection<DataItem>(list).Take(6);
+                    return list.Take(6);
                 }
                 else
                 {
-                    return new ObservableCollection<DataItem>(this.Playlists).Take(12);
+                    //return new ObservableCollection<DataItem>(this.Playlists).Take(12);
+                    return this.Playlists.Take(12);
                 }
             }
         }
