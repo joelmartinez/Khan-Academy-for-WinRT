@@ -12,7 +12,9 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>KhanAcademy_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>KhanAcademy_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <PackageCertificateThumbprint>0CD8610709B81290AB9AE967D1717122F5CD27D6</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -135,6 +137,8 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="KhanAcademy_StoreKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
     <None Include="Common\ReadMe.txt" />
     <Content Include="Assets\AppTitleTree.png" />
     <Content Include="Assets\StoreLogo.png" />

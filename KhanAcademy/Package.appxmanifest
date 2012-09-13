@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="cd104383-4278-4aea-bd3d-27fe571e8c40" Publisher="CN=Richard" Version="1.0.0.0" />
+  <Identity Name="63970JoelMartinez.ViewerforKhanAcademy" Publisher="CN=AEA966A6-E087-462D-83A2-EBBA4427D6C8" Version="1.0.0.0" />
   <Properties>
-    <DisplayName>Khan Academy</DisplayName>
+    <DisplayName>Viewer for Khan Academy</DisplayName>
     <PublisherDisplayName>Joel Martinez</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="KhanAcademy.App">
-      <VisualElements DisplayName="Viewer for Khan Academy" Logo="Assets\khan150150.png" SmallLogo="Assets\khan3030.png" Description="An independent video player for educationaly videos from Khan Academy. Developed by Joel Martinez as a Coding4Fun Community Project." ForegroundText="dark" BackgroundColor="#42ad02">
+      <VisualElements DisplayName="Viewer for Khan Academy" Logo="Assets\khan150150.png" SmallLogo="Assets\khan3030.png" Description="An independent video player for educational videos from Khan Academy. Developed by Joel Martinez as a Coding4Fun Community Project." ForegroundText="dark" BackgroundColor="#42ad02">
         <DefaultTile ShowName="noLogos" WideLogo="Assets\khan310150.png" ShortName="Khan Academy" />
         <SplashScreen Image="Assets\khanSplashScreen.png" BackgroundColor="#42ad02" />
         <InitialRotationPreference>

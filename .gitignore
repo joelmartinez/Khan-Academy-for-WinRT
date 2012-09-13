@@ -44,3 +44,7 @@ _ReSharper*/
 
 # Office Temp Files
 ~$*
+
+# Metro files
+AppPackages/
+*_StoreKey.pfx
