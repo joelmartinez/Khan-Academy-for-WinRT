@@ -27,6 +27,7 @@ namespace KhanAcademy
         public ItemDetailPage()
         {
             this.InitializeComponent();
+            InitializeSettingsPane();
         }
 
         /// <summary>

@@ -1,20 +1,10 @@
 ﻿using KhanAcademy.Data;
-
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.ApplicationModel.DataTransfer;
-using System.Collections.ObjectModel;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -29,6 +19,7 @@ namespace KhanAcademy
         public HubPage()
         {
             this.InitializeComponent();
+            InitializeSettingsPane();
         }
 
         /// <summary>
@@ -42,14 +33,14 @@ namespace KhanAcademy
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-			ObservableCollection<TopicItem> items = JsonSerializer.Deserialize<ObservableCollection<TopicItem>>(navigationParameter as string);
-			this.DefaultViewModel["Groups"] = items;
-			this.groupGridView.ItemsSource = items;
+            ObservableCollection<TopicItem> items = JsonSerializer.Deserialize<ObservableCollection<TopicItem>>(navigationParameter as string);
+            this.DefaultViewModel["Groups"] = items;
+            this.groupGridView.ItemsSource = items;
         }
 
         void Header_Click(object sender, RoutedEventArgs e)
         {
-            
+
             var group = (sender as FrameworkElement).DataContext;
             TopicItem topicSelected = (group as TopicItem);
 
@@ -103,8 +94,8 @@ namespace KhanAcademy
             if (topicSelected != null)
             {
                 JumpToTopic(topicSelected);
-	         }
-	    }
-        
+            }
+        }
+
     }
 }

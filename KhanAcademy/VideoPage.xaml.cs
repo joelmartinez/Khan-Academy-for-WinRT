@@ -33,6 +33,7 @@ namespace KhanAcademy
         public VideoPage()
         {
             this.InitializeComponent();
+            InitializeSettingsPane();
         }
 
         /// <summary>

@@ -1,26 +1,15 @@
 ﻿using KhanAcademy.Common;
-
+using KhanAcademy.Data;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-using KhanAcademy.Data;
 using Windows.ApplicationModel.Search;
-using System.Text.RegularExpressions;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 // The Grid App template is documented at http://go.microsoft.com/fwlink/?LinkId=234226
 

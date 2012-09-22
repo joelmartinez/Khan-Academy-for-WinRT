@@ -32,6 +32,7 @@ namespace KhanAcademy
         public SearchResultsPage()
         {
             this.InitializeComponent();
+            InitializeSettingsPane();
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -86,6 +87,27 @@ namespace KhanAcademy.Common
                 Window.Current.CoreWindow.PointerPressed -=
                     this.CoreWindow_PointerPressed;
             };
+        }
+
+        protected void InitializeSettingsPane()
+        {
+            SettingsPane.GetForCurrentView().CommandsRequested += LayoutAwarePage_CommandsRequested;
+        }
+
+        void LayoutAwarePage_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            string label = "Privacy Policy";
+
+            if (!args.Request.ApplicationCommands.Any(c => c.Id == label))
+            {
+                SettingsCommand cmd = new SettingsCommand(label,
+                    label, async (x) =>
+                    {
+                        await Launcher.LaunchUriAsync(new Uri("http://codecube.net/khanacademy/privacy/"));
+                    });
+
+                args.Request.ApplicationCommands.Add(cmd);
+            }
         }
 
         /// <summary>
